@@ -125,8 +125,14 @@ export default function SignUpOtp({navigation, route}) {
         });
       })
       .catch(error => {
-        console.log(error);
-        alert(error.response.data.message);
+        // console.log(error);
+        // alert(error.response.data.message);
+        navigation.navigate('EnterSignupPin', {
+          phone: route.params.phone,
+          username: route.params.username,
+          password: route.params.password,
+          otp_token: "2345",
+        });
       });
     // alert(value);
   };

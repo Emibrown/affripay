@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {IconlyProvider, ChevronLeft, Scan} from 'react-native-iconly';
 import {useNavigation} from '@react-navigation/core';
-import {CheckBox} from '@ui-kitten/components';
+// import {CheckBox} from '@ui-kitten/components';
 
 import Button from '../../components/Button';
 
@@ -147,13 +147,13 @@ const EscrowRequest = () => {
         <TextInput placeholder="Coin Value" style={styles.cointTextInput} />
         <TextInput placeholder="Dollar Value" style={styles.cointTextInput} />
       </View>
-      <CheckBox
+      {/* <CheckBox
         checked={checked}
         onChange={e => setCheck(e)}
         style={{marginBottom: 20}}>
         I Agree to <Text style={styles.hightlightText}>Terms of Service</Text>{' '}
         and <Text style={styles.hightlightText}>Terms of Use </Text>
-      </CheckBox>
+      </CheckBox> */}
       <Button
         text="Initiate Transaction"
         isDisabled={!checked || selectedCoin == -1}

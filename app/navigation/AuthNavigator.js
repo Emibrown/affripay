@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import Login from '../screens/Login/Login';
-import {ActivityIndicator, View} from 'react-native';
 import EnterLoginPin from '../screens/Login/EnterLoginPin';
 import SignUpOtp from '../screens/SignUp/SignUpOtp';
 import EnterSignupPin from '../screens/SignUp/EnterSignupPin';
@@ -9,78 +8,31 @@ import Signup from '../screens/SignUp/Signup';
 import SignUpSuccess from '../screens/SignUp/SignUpSuccess';
 import ReturningUser from '../screens/ReturningUser/Index';
 import ReturningUserPin from '../screens/ReturningUser/Pin';
-
 import {Onboarding} from '../screens/index';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createStackNavigator,TransitionPresets} from '@react-navigation/stack';
 
-const AuthStack = createNativeStackNavigator();
 
-const AuthNavigator = () => {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
-  let routeName;
+const AuthStack = createStackNavigator();
 
-  useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true'); // No need to wait for `setItem` to finish, although you might want to handle errors
-        setIsFirstLaunch(true);
-      } else {
-        setIsFirstLaunch(false);
-      }
-    }); // Add some error handling, also you can simply do setIsFirstLaunch(null)
-  }, []);
 
-  if (isFirstLaunch === null) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" />
-      </View>
-    ); 
-  } else if (isFirstLaunch == true) {
-    routeName = 'Onboarding';
-  } else {
-    routeName = 'ReturningUser';
-  }
+export const AuthNavigator = () => {
 
   return (
-    <AuthStack.Navigator initialRouteName={routeName}>
-
-<AuthStack.Screen
+    <AuthStack.Navigator 
+      initialRouteName="Onboarding"
+      screenOptions={{
+          ...TransitionPresets.SlideFromRightIOS
+      }}
+    >
+      <AuthStack.Screen
         name="Onboarding"
         component={Onboarding}
         options={{
-          headerShadowVisible: false,
+          headerShown: false,
           title: '',
         }}
       />
-      
-      {/* Returning user */}
-
-
-
-      <AuthStack.Screen
-        name="ReturningUser"
-        component={ReturningUser}
-        options={{
-          headerShadowVisible: false,
-          title: '',
-        }}
-      />
-
-      <AuthStack.Screen
-        name="ReturningUserPin"
-        component={ReturningUserPin}
-        options={{
-          headerShadowVisible: false,
-          title: '',
-        }}
-      />
-
-      {/* Returning user end */}
-
       {/* signup screens */}
-
       <AuthStack.Screen
         name="Signup"
         component={Signup}
@@ -125,10 +77,10 @@ const AuthNavigator = () => {
           title: '',
         }}
       />
-
       {/* signup screens ends */}
 
       {/* login screens */}
+
       <AuthStack.Screen
         name="Login"
         component={Login}
@@ -145,10 +97,40 @@ const AuthNavigator = () => {
           title: '',
         }}
       />
-
       {/* login screens end */}
     </AuthStack.Navigator>
   );
 };
 
-export default AuthNavigator;
+export const ReturningUserNavigator = () => {
+
+  return (
+    <AuthStack.Navigator 
+      initialRouteName="ReturningUser"
+      screenOptions={{
+          ...TransitionPresets.SlideFromRightIOS
+      }}
+    >
+
+      {/* Returning user */}
+      <AuthStack.Screen
+        name="ReturningUser"
+        component={ReturningUser}
+        options={{
+          headerShadowVisible: false,
+          title: '',
+        }}
+      />
+      <AuthStack.Screen
+        name="ReturningUserPin"
+        component={ReturningUserPin}
+        options={{
+          headerShadowVisible: false,
+          title: '',
+        }}
+      />
+      {/* Returning user end */}
+    </AuthStack.Navigator>
+  );
+};
+
