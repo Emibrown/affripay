@@ -25,7 +25,7 @@ import More from '../../assets/images/More.svg';
 
 import GradientText from '../../constants/gradientText';
 import Button from '../../components/Button';
-import {Avatar} from '@ui-kitten/components';
+// import {Avatar} from '@ui-kitten/components';
 
 // import { LinearGradient } from 'expo-linear-gradient';
 export default function Index({navigation, route}) {
@@ -85,11 +85,11 @@ export default function Index({navigation, route}) {
               onPress={onPressEnterPin}
               style={styles.loggedInUser}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Avatar
+                {/* <Avatar
                   source={User}
                   size="giant"
                   ImageComponent={ImageBackground}
-                />
+                /> */}
 
                 <Text style={styles.loggedInUserName}>{username}</Text>
               </View>

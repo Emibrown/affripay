@@ -14,7 +14,7 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import {Avatar} from '@ui-kitten/components';
+// import {Avatar} from '@ui-kitten/components';
 import User from '../../assets/images/user.png';
 import axios from 'axios';
 
@@ -75,7 +75,7 @@ export default function Pin({navigation, route}) {
     <SafeAreaView style={styles.container}>
       <View style={styles.inner}>
         <View style={styles.topContain}>
-          <Avatar source={User} size="giant" ImageComponent={ImageBackground} />
+          {/* <Avatar source={User} size="giant" ImageComponent={ImageBackground} /> */}
 
           <Text style={styles.loggedInUserName}>{userName}</Text>
 

@@ -10,6 +10,7 @@ import {
 import {TextInput} from 'react-native-gesture-handler';
 import {ChevronLeft, IconlyProvider, ArrowUpSquare} from 'react-native-iconly';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 import Person1 from '../../assets/images/p1.png';
 import Person2 from '../../assets/images/p2.png';
@@ -166,8 +167,8 @@ const QRScan = () => {
               flexDirection: 'column-reverse',
             }}>
             <ScrollView horizontal>
-              {lists.map(item => (
-                <TouchableOpacity>
+              {lists.map((item, i)=> (
+                <TouchableOpacity key={i}>
                   <Image
                     key={item.id}
                     source={item.image}
@@ -204,7 +205,7 @@ const QRScan = () => {
             type="filled"
             bordered
             size="large"
-            isDisabled={!isValid}
+            // isDisabled={!isValid}
             onPress={() => navigation.navigate('')}
           />
         </View>

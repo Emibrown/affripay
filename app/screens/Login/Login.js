@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  Text
 } from 'react-native';
 
 import {COLORS, SIZES} from '../../constants/index';
@@ -24,7 +25,6 @@ import axios from 'axios';
 import PswIcon from '../../assets/images/PasswordIcon.svg';
 import * as yup from 'yup';
 import {Formik} from 'formik';
-import {Radio, RadioGroup, Text} from '@ui-kitten/components';
 import {
   IconlyProvider,
   Home,

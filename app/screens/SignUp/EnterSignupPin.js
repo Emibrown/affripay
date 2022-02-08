@@ -44,7 +44,8 @@ export default function EnterSignupPin({navigation, route}) {
     phone.substring(6, 10);
 
   const onPress = () => {
-    navigation.navigate('ConfirmPin', {pin: value, phone: phone});
+    // navigation.navigate('ConfirmPin', {pin: value, phone: phone});
+    navigation.navigate('SignUpSuccess');
 
     // const otp_token = route.params.otp_token;
 

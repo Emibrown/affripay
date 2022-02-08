@@ -10,9 +10,9 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Text
 } from 'react-native';
 
-import {Radio, RadioGroup, Text} from '@ui-kitten/components';
 
 import {
   CodeField,
@@ -83,6 +83,7 @@ export default function ResetPassoword({navigation, route}) {
           })
           .catch(function (error) {
             console.log(error);
+            navigation.navigate('ResetOtp', {userPhoneNumber: values.phone});
           });
       }}
       validateOnMount={true}

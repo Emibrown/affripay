@@ -12,8 +12,8 @@ import {
   SafeAreaView,
   ActivityIndicator,
   TouchableOpacity,
+  Text
 } from 'react-native';
-import {Radio, RadioGroup, Text} from '@ui-kitten/components';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 
