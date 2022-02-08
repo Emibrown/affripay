@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   ImageBackground,
   Alert,
+  Text
 } from 'react-native';
 
 import {
@@ -20,8 +21,6 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-
-import {Text} from '@ui-kitten/components';
 
 import {AuthContext} from '../../context/AuthContext';
 const CELL_COUNT = 4;

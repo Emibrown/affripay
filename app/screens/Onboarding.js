@@ -11,12 +11,13 @@ import {
   Dimensions,
 } from 'react-native';
 import {COLORS, SIZES} from '../constants/index';
-
+import { useTheme } from '@react-navigation/native';
 import OnboardingX from 'react-native-onboarding-swiper';
 
 const {width, height} = Dimensions.get('window');
 
 const Onboarding = ({navigation}) => {
+  const { colors } = useTheme();
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
   const ref = React.useRef();
   const updateCurrentSlideIndex = e => {
@@ -26,11 +27,11 @@ const Onboarding = ({navigation}) => {
   };
 
   const onPressLogin = () => {
-    navigation.replace('Login');
+    navigation.navigate('Login');
   };
 
   const onPressSignup = () => {
-    navigation.replace('Signup');
+    navigation.navigate('Signup');
   };
 
   const Square = ({isLight, selected}) => {

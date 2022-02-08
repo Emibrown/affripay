@@ -44,9 +44,10 @@ export default function BottomTabNavigator() {
           borderTopColor: '#F1F3FA',
         },
       }}>
+        
       <BottomTab.Screen
         name="Dashboard"
-        component={DashboardScreenNavigator}
+        component={DashboardScreen}
         options={{
           tabBarIcon: ({color}) => (
             <IconlyProvider
@@ -61,9 +62,10 @@ export default function BottomTabNavigator() {
           headerShown: false,
         }}
       />
+
       <BottomTab.Screen
         name="Card"
-        component={CardScreenNavigator}
+        component={CardScreen}
         options={{
           tabBarIcon: ({color}) => (
             <IconlyProvider
@@ -81,9 +83,10 @@ export default function BottomTabNavigator() {
           // headerShown: false,
         }}
       />
+
       <BottomTab.Screen
         name="QRScan"
-        component={QRScanScreenNavigator}
+        component={QRScanScreen}
         options={{
           tabBarIcon: ({color}) => (
             <View
@@ -111,101 +114,23 @@ export default function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="Wallet"
-        component={WalletScreenNavigator}
+        component={WalletScreen}
         options={{
           tabBarIcon: ({color}) => <WalletIcon color={color} />,
           headerShown: false,
         }}
       />
+
       <BottomTab.Screen
         name="Profile"
-        component={ProfileScreenNavigator}
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({color}) => <ProfileIcon color={color} />,
           headerShown: false,
         }}
       />
+      
     </BottomTab.Navigator>
-  );
-}
-
-const DashboardScreenStack = createStackNavigator();
-function DashboardScreenNavigator() {
-  return (
-    <DashboardScreenStack.Navigator>
-      <DashboardScreenStack.Screen
-        name="Dashboard"
-        component={DashboardScreen}
-        options={{headerShown: false}}
-      />
-    </DashboardScreenStack.Navigator>
-  );
-}
-
-const QRScanScreenStack = createStackNavigator();
-function QRScanScreenNavigator() {
-  return (
-    <QRScanScreenStack.Navigator>
-      <QRScanScreenStack.Screen
-        name="QRScan"
-        component={QRScanScreen}
-        options={{headerShown: false}}
-      />
-    </QRScanScreenStack.Navigator>
-  );
-}
-
-const ProfileScreenStack = createStackNavigator();
-function ProfileScreenNavigator() {
-  return (
-    <ProfileScreenStack.Navigator>
-      <ProfileScreenStack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{headerShown: false}}
-      />
-      <ProfileScreenStack.Screen
-        name="Settings"
-        component={SettingScreen}
-        options={{headerShown: false}}
-      />
-      <ProfileScreenStack.Screen
-        name="Notifications"
-        component={Notification}
-        options={{headerShown: false}}
-      />
-      <ProfileScreenStack.Screen
-        name="Security"
-        component={Security}
-        options={{headerShown: false}}
-      />
-    </ProfileScreenStack.Navigator>
-  );
-}
-
-const CardScreenStack = createStackNavigator();
-function CardScreenNavigator() {
-  return (
-    <CardScreenStack.Navigator>
-      <CardScreenStack.Screen
-        name="Card"
-        component={CardScreen}
-        options={{headerShown: false}}
-      />
-    </CardScreenStack.Navigator>
-  );
-}
-
-const WalletScreenStack = createStackNavigator();
-function WalletScreenNavigator() {
-  return (
-    <WalletScreenStack.Navigator>
-      <WalletScreenStack.Screen
-        name="Wallet"
-        component={WalletScreen}
-        options={{headerShown: false}}
-      />
-    </WalletScreenStack.Navigator>
   );
 }
 
