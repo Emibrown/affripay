@@ -8,9 +8,8 @@ import Signup from '../screens/SignUp/Signup';
 import SignUpSuccess from '../screens/SignUp/SignUpSuccess';
 import ReturningUser from '../screens/ReturningUser/Index';
 import ReturningUserPin from '../screens/ReturningUser/Pin';
-import {Onboarding} from '../screens/index';
 import { createStackNavigator,TransitionPresets} from '@react-navigation/stack';
-
+import Onboarding from '../screens/Onboarding';
 
 const AuthStack = createStackNavigator();
 
