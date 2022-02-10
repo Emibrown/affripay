@@ -1,314 +1,135 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Text,
-  Platform,
   Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  SafeAreaView,
+  Dimensions,
+  StyleSheet,
   TouchableOpacity,
+  Text,
+  ScrollView
 } from 'react-native';
-import axios from 'axios';
+import {Formik} from 'formik';
+import {SafeAreaView } from 'react-native-safe-area-context';
 import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
-const CELL_COUNT = 6;
-import {COLORS, SIZES} from '../../constants/index';
+  IconlyProvider,
+  Home,
+  Notification,
+  User,
+  ArrowLeft,
+  ChevronLeft,
+  Call,
+  Phone,
+} from 'react-native-iconly';
 import Logo from '../../assets/images/logo.png';
-
-import GradientText from '../../constants/gradientText';
 import Button from '../../components/Button';
-// import { LinearGradient } from 'expo-linear-gradient';
-export default function SignUpOtp({navigation, route}) {
-  const [value, setValue] = useState('');
-  let clockCall = null;
+import PswIcon from '../../assets/images/PasswordIcon.svg';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { moderateScale } from 'react-native-size-matters';
+import CustomTextInput from '../../components/CustomTextInput';
+import {Radio} from '@ui-kitten/components';
+import Header from '../../components/Header';
+import OtpInput from '../../components/OtpInput';
+const { width, height } = Dimensions.get('window');
 
-  let defaultTimer = 10;
-  const [countdown, setCountdown] = useState(defaultTimer);
-  const [interVal, setInterVal] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
 
-  const [enableResend, setEnableResend] = useState(false);
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
 
-  const decrementClock = () => {
-    if (countdown === 0) {
-      setEnableResend(true);
-      setCountdown(0);
-      clearInterval(clockCall);
-    } else {
-      setCountdown(countdown - 1);
-    }
-  };
 
-  const resendOtp = () => {
-    if (enableResend) {
-      setCountdown(defaultTimer);
-      setEnableResend(false);
-      clearInterval(clockCall);
-
-      let data = JSON.stringify({
-        phone: route.params.phone,
-      });
-
-      let config = {
-        method: 'post',
-        url: 'https://afrirpayuserservice.herokuapp.com/api/v1/auth/resend-otp',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        data: data,
-      };
-
-      axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-
-          alert('OTP has been resend');
-        })
-        .catch(function (error) {
-          console.log(error);
-
-          alert(error.response.data.message);
-        });
-    }
-
-    clockCall = setInterval(() => {
-      decrementClock();
-    }, 1000);
-  };
-  useEffect(() => {
-    clockCall = setInterval(() => {
-      decrementClock();
-    }, 1000);
-
-    return () => {
-      clearInterval(clockCall);
-    };
-  });
-
-  const onPress = () => {
-    let data = JSON.stringify({
-      phone: route.params.phone,
-      otp_token: value,
-    });
-    let config = {
-      method: 'post',
-      url: 'https://afrirpayuserservice.herokuapp.com/api/v1/auth/verify-otp',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(response => {
-        console.log(response.data);
-
-        navigation.navigate('EnterSignupPin', {
-          phone: route.params.phone,
-          username: route.params.username,
-          password: route.params.password,
-          otp_token: value,
-        });
-      })
-      .catch(error => {
-        // console.log(error);
-        // alert(error.response.data.message);
-        navigation.navigate('EnterSignupPin', {
-          phone: route.params.phone,
-          username: route.params.username,
-          password: route.params.password,
-          otp_token: "2345",
-        });
-      });
-    // alert(value);
-  };
-
-  const params = route.params;
-  const [seconds, setSeconds] = useState(60);
-
-  const [text, setText] = React.useState('waiting...');
-
-  console.log(params);
+export default function SignupOtp({navigation, route}) {
+  
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inner}>
+    <SafeAreaView style={{
+      flex:1,
+      backgroundColor:"white"
+    }}>
+      <Header title="OTP Code" />
+      <ScrollView style={{paddingHorizontal:"7%"}}>
+
         <View style={styles.topContain}>
           <Text style={styles.text}>We’ll text your OTP code</Text>
-
-          {/* <Text style={styles.phoneNumber}>{realPhoneNumber}</Text> */}
-        </View>
-        <View>
-          <CodeField
-            ref={ref}
-            {...props}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={(styles.codeFieldRoot, styles.inputContainer)}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
         </View>
 
-        <View>
-          <Button
-            text="Confirm"
-            type="filled"
-            bordered
-            size="small"
-            onPress={onPress}
-          />
+        <View style={styles.form}>
 
-          <View style={styles.Bottom}>
-            {/* didnt otp receive sms */}
-            <Text style={styles.BottomText}>Didn't receive SMS?</Text>
-
-            <TouchableOpacity onPress={resendOtp}>
-              <Text style={styles.BottomResend}>
-                Resend Code in
-                <Text
-                  style={[
-                    styles.resendTimer,
-                    {
-                      color: enableResend ? 'rgba(78, 92, 128, 1)' : 'gray',
-                    },
-                  ]}>
-                  {' '}
-                  (00:{countdown}){' '}
-                </Text>
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.inputContainer}>
+            <OtpInput />
           </View>
+
+          <View style={{
+            marginHorizontal:"25%"
+          }}>
+            <Button 
+              text="Confirm"
+              bordered
+              onPress={()=>navigation.navigate("SignupPin")}
+            />
+          </View>
+
+          <View style={{
+            alignItems:"center",
+            marginTop:"5%"
+          }}>
+            <Text style={{
+              color:"#FE6A92",
+              fontSize:moderateScale(14),
+              fontWeight:"normal"
+            }}>
+            Didn’t receive SMS
+            </Text>
+
+            <Text style={{
+              fontWeight:"500",
+              fontSize:moderateScale(14),
+              color:"rgba(0, 0, 0, 0.7)",
+              marginTop:"2%"
+            }}>
+            Resend Code in <Text style={{color:"rgba(99, 47, 201, 0.7)"}}>(00:59)</Text>
+            </Text>
+
+          </View>
+         
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 10,
-    width: '100%',
+  logo:{
+    width:per_height(6),
+    height:per_height(6),
   },
-
-  inner: {
-    flex: 1,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+  topContain:{
+    alignItems:"center",
+    marginTop:"10%"
   },
-
-  input: {
-    backgroundColor: 'red',
-    padding: SIZES.base * 1,
-    backgroundColor: '#F1F3FA',
-    borderRadius: SIZES.base * 1,
+  form:{
+    marginTop:"2%"
   },
-  //   style for inputText
-  inputText: {
-    fontSize: SIZES.base * 2,
-    color: COLORS.appPrimary,
-    fontWeight: 'bold',
-    marginRight: SIZES.base * 2,
-    backgroundColor: '#F1F3FA',
-    padding: SIZES.base * 1,
-    borderRadius: SIZES.base * 1,
+  text:{
+    fontWeight:"500",
+    fontSize:moderateScale(16),
+    color:"#4E5C80",
+    // marginVertical:"2%",
   },
-
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 5,
-    color: COLORS.appPrimary,
+  inputContainer:{
+    marginBottom:"8%"
   },
-
-  text: {
-    color: 'rgba(78, 92, 128, 1)',
-    fontSize: 16,
-    fontWeight: '500',
-    marginTop: 20,
-    lineHeight: 22,
+  radio: {
   },
-
-  topContain: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  hightlightText: {
+    color: '#4A5AFF',
   },
-
-  root: {padding: 20, minHeight: 200},
-  title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 5},
-  cell: {
-    width: 40,
-    marginLeft: 10,
-    height: 50,
-    lineHeight: 38,
-    fontSize: 24,
-    borderWidth: 2,
-    borderColor: '#E9ECF4',
-    textAlign: 'center',
-    backgroundColor: '#F1F3FA',
-    borderRadius: 10,
-    paddingTop: 5,
+  radioText:{
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
   },
-  focusCell: {
-    borderColor: '#F1F3FA',
-  },
-
-  phoneNumber: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: '500',
-    color: COLORS.dark_2,
-    //   color:Color.dark_2,
-  },
-
-  Bottom: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 18,
-  },
-
-  BottomText: {
-    color: COLORS.secondary,
-    fontSize: 14,
-    fontWeight: '400',
-  },
-
-  BottomResend: {
-    fontSize: 14,
-    fontWeight: '500',
-  },
-
-  resendTimer: {
-    color: 'rgba(78, 92, 128, 1)',
-    fontSize: 14,
+  code:{
+    borderRightWidth:1,
+    paddingHorizontal:"5%",
+    justifyContent:"center",
+    alignItems:"center"
   },
 });

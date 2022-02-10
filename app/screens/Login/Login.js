@@ -1,485 +1,193 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Platform,
   Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  Modal,
+  Dimensions,
+  StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  FlatList,
-  Text
+  TextInput,
+  Text,
+  ScrollView
 } from 'react-native';
-
-import {COLORS, SIZES} from '../../constants/index';
-import Logo from '../../assets/images/logo.png';
-import GradientText from '../../constants/gradientText';
-import Button from '../../components/Button';
-import {Countries} from '../../data/countries';
-import axios from 'axios';
-import PswIcon from '../../assets/images/PasswordIcon.svg';
-import * as yup from 'yup';
 import {Formik} from 'formik';
+import {SafeAreaView } from 'react-native-safe-area-context';
+import GradientText from '../../constants/gradientText';
 import {
   IconlyProvider,
   Home,
   Notification,
   User,
+  ArrowLeft,
+  ChevronLeft,
   Call,
   Phone,
 } from 'react-native-iconly';
+import Logo from '../../assets/images/logo.png';
+import Button from '../../components/Button';
+import PswIcon from '../../assets/images/PasswordIcon.svg';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { moderateScale } from 'react-native-size-matters';
+import CustomTextInput from '../../components/CustomTextInput';
+import {Radio} from '@ui-kitten/components';
+import Header from '../../components/Header';
+import PinInput from '../../components/PinInput';
+import { primaryColor } from '../../style/color';
+const { width, height } = Dimensions.get('window');
 
-// import { LinearGradient } from 'expo-linear-gradient';
-export default function Login({navigation}) {
-  let textInput = useRef(null);
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
 
-  const defaultNumber = '+234';
-  const defaulMasktNumberCountry = '345 566 789';
 
-  const [placeholder, setPlaceholder] = useState(defaulMasktNumberCountry);
 
-  const [inputfocus, setInputFocus] = useState(true);
-
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [modalVisble, setModalVisble] = useState(false);
-
-  const [dataCountries, setDataCountries] = useState(Countries);
-
-  const [countryCode, setcountryCode] = useState(defaultNumber);
-
-  const phoneRegExp = /^(?=.*\d).{8,}$/;
-
-  let loginSchema = yup.object().shape({
-    // password: yup
-    //   .string()
-    //   .required('Please Enter your password')
-    //   .matches(/^(?=.*\d).{8,}$/, 'Must Contain at least 8 Characters'),
-    phone: yup
-      .string()
-      .required('Please Enter your Phone Number')
-      .matches(phoneRegExp, 'Phone number is not valid'),
-  });
-  const onPress = () => {
-    let realPhoneNumber = countryCode + phoneNumber;
-    // phoneNumber.length === ''
-    //   ? navigation.navigate('EnterPin', {realPhoneNumber})
-    //   : alert('Please enter a valid phone number');
-
-    navigation.navigate('EnterLoginPin', {realPhoneNumber});
-  };
-
-  //onchangephoneNumber
-  const onChangePhoneNumber = number => {
-    setPhoneNumber(number);
-  };
-
-  const onShowHideModal = () => {
-    setModalVisble(!modalVisble);
-  };
-
-  const onChangeFocus = () => {
-    setInputFocus(true);
-  };
-
-  const onChangeBlur = () => {
-    setInputFocus(false);
-  };
-
-  const onCountryChange = item => {
-    // setPhoneNumber(item.dialCode);
-    setcountryCode(item.dialCode);
-
-    setPlaceholder(item.mask);
-    setModalVisble(false);
-  };
-
-  // const filterCountries = value => {
-  //   if (value) {
-  //     const countryData = dataCountries?.filter(obj => {
-  //       obj.en.indexOf(value) > -1 || obj.dialCode.indexOf(value) > -1;
-
-  //       setDataCountries(countryData);
-  //     });
-  //   } else {
-  //     setDataCountries(Countries);
-  //   }
-  // };
-
-  const filterInput = text => {
-    //FILTER for  countries
-  };
-
-  let renderModal = () => {
-    return (
-      <Modal animationType="slide" transparent={false} visible={modalVisble}>
-        <SafeAreaView style={{flex: 1}}>
-          <View style={styles.modalContainer}>
-            {/* <View style={styles.filterInputContainer}>
-              <TextInput
-                autoFocus={true}
-                onChangeText={filterCountries}
-                placeholder="Filter"
-                focusable={true}
-                style={styles.filterInput}
-              />
-            </View> */}
-
-            <FlatList
-              style={{flex: 1}}
-              data={dataCountries}
-              extraData={dataCountries}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({item, index}) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.modalItem}
-                    onPress={() => {
-                      onCountryChange(item);
-                    }}>
-                    <View style={styles.countryModalStyle}>
-                      <View style={styles.modalItemContainer}>
-                        <Text style={styles.modalText}>{item.en} </Text>
-                        <Text style={styles.modalText}>({item.dialCode})</Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        </SafeAreaView>
-      </Modal>
-    );
-  };
+export default function Login({navigation, route}) {
+  
 
   return (
-    <Formik
-      initialValues={{ phone: ''}}
-      onSubmit={values => {
-        // alert(JSON.stringify(values, null, 2));
+    <SafeAreaView style={{
+      flex:1,
+      backgroundColor:"white"
+    }}>
+      <Header />
+      <ScrollView style={{paddingHorizontal:"7%"}}>
 
-        let data = JSON.stringify({
-          phone: values.phone,
-        });
+        <View style={styles.topContain}>
+          <Image style={styles.logo} source={Logo} />
+          <View style={{
+            marginTop:"10%",
+            alignItems:"center"
+          }}>
+            <GradientText style={styles.welcomeText}>
+              Welcome to AfrirPay
+            </GradientText>
+            <Text style={styles.subText}>Please enter your mobile number</Text>
+          </View>
+        </View>
 
-        let config = {
-          method: 'post',
-          url: 'https://afrirpayuserservice.herokuapp.com/api/v1/auth/login',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: data,
-        };
+        <View style={styles.form}>
 
-        axios(config)
-          .then(response => {
-            console.log(JSON.stringify(response.data));
-          })
-          .then(() => {
-            navigation.navigate('EnterLoginPin' , {phoneNumber: values.phone});
-          })
-
-          .catch(function (error) {
-            alert(error.response.data.message);
-
-            console.log(error);
-          });
-      }}
-      validateOnMount={true}
-      validationSchema={loginSchema}>
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        touched,
-        errors,
-        isValid,
-      }) => (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.inner}>
-              <View style={styles.topContain}>
-                <Image style={styles.logo} source={Logo} />
-
-                <GradientText style={styles.welcomeText}>
-                  Welcome to AfrirPay
-                </GradientText>
-                <Text style={styles.text}>
-                  {' '}
-                  Please enter your mobile number
+          <View style={styles.inputContainer}>
+            <View style={{
+              flexDirection:"row",
+            }}>
+              <View style={{
+                backgroundColor:"#F1F3FA",
+                paddingHorizontal:"4%",
+                paddingVertical:"2%",
+                borderRadius:10
+              }}>
+                <Text style={styles.label}>
+                  ID
                 </Text>
-              </View>
-
-              <View>
-                <View style={styles.signupInputContainer}>
-                  <IconlyProvider
-                    set="light"
-                    primaryColor="#959FBA"
-                    secondaryColor="#959FBA"
-                    stroke="bold"
-                    size="large">
-                    <Call />
-                  </IconlyProvider>
-
-                  <TextInput
-                    keyboardType="numeric"
-                    style={styles.signupinput}
-                    placeholder="Phone"
-                    onChangeText={handleChange('phone')}
-                    onBlur={handleBlur('phone')}
-                    value={values.phone}></TextInput>
-                </View>
-                {touched.phone && errors.phone && (
-                  <Text style={styles.error} status="danger">
-                    {errors.phone}
+                <TouchableOpacity style={{
+                  flex:1,
+                  justifyContent:"center"
+                }}>
+                  <Text style={styles.callCode}>
+                    +234
                   </Text>
-                )}
-
-                {/* <View style={styles.signupInputContainer}>
-           
-
-                  <PswIcon />
-
-                  <TextInput
-                    style={styles.signupinput}
-                    secureTextEntry={true}
-                    autoCorrect={false}
-                    placeholder="Enter Password"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}></TextInput>
-                </View>
-
-                {touched.password && errors.password && (
-                  <Text style={styles.error} status="danger">
-                    {errors.password}
-                  </Text>
-                )} */}
+                </TouchableOpacity>
               </View>
-
-              <Button
-                text="Continue"
-                type="filled"
-                bordered
-                size="large"
-                isDisabled={!isValid}
-                onPress={handleSubmit}
-              />
+              <View style={{
+                flex:1,
+                backgroundColor:"#F1F3FA",
+                marginLeft:"2%",
+                paddingHorizontal:"4%",
+                paddingVertical:"2%",
+                borderRadius:10
+              }}>
+                <Text style={styles.label}>
+                Phone Number
+                </Text>
+                <TextInput 
+                  style={{
+                    flex:1,
+                    paddingVertical:0,
+                    paddingLeft:0,
+                    marginVertical:0,
+                    color:"#0A0A0A",
+                    fontSize:moderateScale(14),
+                    fontWeight:'500'
+                  }}
+                  
+                  keyboardType="numeric"
+                />
+              </View>
             </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      )}
-    </Formik>
+          </View>
+
+        
+          <View>
+            <Button 
+              text="Continue"
+              bordered
+              onPress={()=>navigation.navigate("EnterLoginPin")}
+            />
+          </View>
+         
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingVertical: 10,
+  header:{
+    paddingVertical:'3%',
+    marginHorizontal:"3%"
   },
-
-  inner: {
-    flex: 1,
-    justifyContent: 'space-between',
+  logo:{
+    width:per_height(6),
+    height:per_height(6),
   },
-
-  input: {
-    backgroundColor: 'red',
-    padding: SIZES.base * 1,
-    backgroundColor: '#F1F3FA',
-    borderRadius: SIZES.base * 1,
+  topContain:{
+    alignItems:"center"
   },
-  //   style for inputText
-  inputText: {
-    fontSize: SIZES.base * 2,
-    color: COLORS.appPrimary,
-    fontWeight: 'bold',
-    marginRight: SIZES.base * 2,
-    backgroundColor: '#F1F3FA',
-    padding: SIZES.base * 1,
-    borderRadius: SIZES.base * 1,
+  callCode:{
+    color:"#0A0A0A",
+    fontWeight:"500",
+    fontSize:moderateScale(14)
   },
-  // style for TextInput
-
-  //style for input
-  inputContainer: {
-    width: '80%',
-    marginTop: SIZES.base * 2,
-    marginBottom: SIZES.base * 2,
-    borderRadius: SIZES.base * 2,
-    backgroundColor: COLORS.WHITE,
-    padding: SIZES.base * 2,
-    flexDirection: 'row',
-    alignItems: 'center',
+  form:{
+    marginTop:"20%"
+  },
+  text:{
+    fontWeight:"500",
+    fontSize:moderateScale(16),
+    color:"rgba(38, 38, 38, 0.6)",
+  },
+  subText:{
+    fontWeight:"500",
+    marginTop:"1%",
+    fontSize:moderateScale(16),
+    color:"#4E5C80",
+  },
+  inputContainer:{
+    marginBottom:"8%"
+  },
+  label:{
+    color:"#757575",
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
+  },
+  radio: {
+  },
+  hightlightText: {
+    color: '#4A5AFF',
+  },
+  radioText:{
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
+  },
+  code:{
+    borderRightWidth:1,
+    paddingHorizontal:"5%",
+    justifyContent:"center",
+    alignItems:"center"
   },
   welcomeText: {
-    fontSize: 22,
+    fontSize: moderateScale(18),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 5,
-    color: COLORS.appPrimary,
-  },
-
-  text: {
-    color: '#4E5C80',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-
-  topContain: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  containerInput: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    borderBottomColor: 1,
-  },
-
-  openDialogView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  error: {
-    fontSize: 11,
-  },
-
-  phoneinput: {
-    // marginLeft: 10,
-    width: '100%',
-    flex: 1,
-    fontSize: 14,
-    color: COLORS.Neutral_100,
-    fontWeight: '500',
-  },
-
-  countryCode: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: COLORS.Neutral_100,
-    marginTop: 6,
-  },
-  modalContainer: {
-    paddingTop: 10,
-    paddingLeft: 25,
-    paddingRight: 25,
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-
-  filterInput: {
-    flex: 1,
-    padding: 10,
-    paddingBottom: 10,
-    backgroundColor: '#fff',
-    color: '#424242',
-  },
-  countryModalStyle: {
-    flex: 1,
-    borderColor: COLORS.dark_2,
-    borderTopWidth: 0,
-    padding: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  modalItemContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingleft: 5,
-  },
-
-  modalText: {
-    // flex: 1,
-    fontSize: 16,
-  },
-
-  filterInputContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  labelWrapper: {
-    flex: 1,
-    width: '100%',
-    height: 70,
-    backgroundColor: COLORS.grey,
-    borderRadius: 6,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-  },
-  labelWrapperId: {
-    height: 65,
-    backgroundColor: COLORS.grey,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 6,
-    marginRight: 8,
-  },
-
-  labelIdWrapper: {
-    flex: 1,
-    width: '100%',
-    height: 54,
-  },
-
-  labelText: {
-    fontSize: 12,
-    fontWeight: '400',
-    color: COLORS.Neutral,
-    paddingTop: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  labelTextId: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: 2,
-    fontSize: 12,
-    fontWeight: '400',
-    color: COLORS.Neutral,
-  },
-
-  signupInputContainer: {
-    backgroundColor: COLORS.dark_8,
-    borderRadius: 6,
-    marginVertical: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  signupinput: {
-    flex: 1,
-    marginLeft: 10,
-    paddingVertical: 15,
-    color: '#4E5C80',
-    fontWeight: '400',
-    fontSize: 14,
+    color: primaryColor,
   },
 });
