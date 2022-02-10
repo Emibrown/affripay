@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import Login from '../screens/Login/Login';
 import EnterLoginPin from '../screens/Login/EnterLoginPin';
-import SignUpOtp from '../screens/SignUp/SignUpOtp';
-import EnterSignupPin from '../screens/SignUp/EnterSignupPin';
+import SignupOtp from '../screens/SignUp/SignupOtp';
+import SignupPin from '../screens/SignUp/SignupPin';
 import ConfirmPin from '../screens/SignUp/ConfirmPin';
 import Signup from '../screens/SignUp/Signup';
 import SignUpSuccess from '../screens/SignUp/SignUpSuccess';
@@ -28,7 +28,6 @@ export const AuthNavigator = () => {
         component={Onboarding}
         options={{
           headerShown: false,
-          title: '',
         }}
       />
       {/* signup screens */}
@@ -36,44 +35,35 @@ export const AuthNavigator = () => {
         name="Signup"
         component={Signup}
         options={{
-          headerShadowVisible: false,
-          title: '',
-        }}
-      />
-      <AuthStack.Screen
-        name="SignUpOtp"
-        component={SignUpOtp}
-        options={{
-          headerShadowVisible: false,
-          headerTitleAlign: 'center',
-          title: 'OTP code',
-        }}
-      />
-      <AuthStack.Screen
-        name="EnterSignupPin"
-        component={EnterSignupPin}
-        options={{
-          headerShadowVisible: false,
           headerShown: false,
-          title: '',
+        }}
+      />
+      <AuthStack.Screen
+        name="SignupOtp"
+        component={SignupOtp}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <AuthStack.Screen
+        name="SignupPin"
+        component={SignupPin}
+        options={{
+          headerShown: false,
         }}
       />
       <AuthStack.Screen
         name="ConfirmPin"
         component={ConfirmPin}
         options={{
-          headerShadowVisible: false,
-
-          title: '',
+          headerShown: false,
         }}
       />
       <AuthStack.Screen
         name="SignUpSuccess"
         component={SignUpSuccess}
         options={{
-          headerShadowVisible: false,
           headerShown: false,
-          title: '',
         }}
       />
       {/* signup screens ends */}
@@ -84,16 +74,14 @@ export const AuthNavigator = () => {
         name="Login"
         component={Login}
         options={{
-          headerShadowVisible: false,
-          title: '',
+          headerShown: false,
         }}
       />
       <AuthStack.Screen
         name="EnterLoginPin"
         component={EnterLoginPin}
         options={{
-          headerShadowVisible: false,
-          title: '',
+          headerShown: false,
         }}
       />
       {/* login screens end */}

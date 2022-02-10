@@ -1,194 +1,126 @@
 import React, {useState} from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Text,
-  Platform,
   Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  SafeAreaView,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView
 } from 'react-native';
-
-import axios from 'axios';
-
+import {Formik} from 'formik';
+import {SafeAreaView } from 'react-native-safe-area-context';
 import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
-const CELL_COUNT = 4;
-import {COLORS, SIZES} from '../../constants/index';
+  IconlyProvider,
+  Home,
+  Notification,
+  User,
+  ArrowLeft,
+  ChevronLeft,
+  Call,
+  Phone,
+} from 'react-native-iconly';
 import Logo from '../../assets/images/logo.png';
-
-import GradientText from '../../constants/gradientText';
 import Button from '../../components/Button';
-// import { LinearGradient } from 'expo-linear-gradient';
-export default function ConfirmPin({navigation, route}) {
-  const [value, setValue] = useState('');
+import PswIcon from '../../assets/images/PasswordIcon.svg';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { moderateScale } from 'react-native-size-matters';
+import CustomTextInput from '../../components/CustomTextInput';
+import {Radio} from '@ui-kitten/components';
+import Header from '../../components/Header';
+import PinInput from '../../components/PinInput';
+const { width, height } = Dimensions.get('window');
 
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
 
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
 
-  let {pin, phone} = route.params;
 
-  const onPress = () => {
-    let data = JSON.stringify({
-      phone: phone,
-      pin: pin,
-      confirm_pin: value,
-    });
-
-    let config = {
-      method: 'post',
-      url: 'https://afrirpayuserservice.herokuapp.com/api/v1/auth/create-pin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(response => {
-        navigation.navigate('SignUpSuccess');
-      })
-      .catch(error => {
-        console.log(error);
-        alert(
-          error.response.data.message && 'Pin does not match check pin again',
-        );
-      });
-  };
+export default function SignupPin({navigation, route}) {
+  
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inner}>
+    <SafeAreaView style={{
+      flex:1,
+      backgroundColor:"white"
+    }}>
+      <Header />
+      <ScrollView style={{paddingHorizontal:"7%"}}>
+
         <View style={styles.topContain}>
           <Image style={styles.logo} source={Logo} />
-
-          <Text style={styles.text}>Please Confirm PIN for</Text>
-
-          <Text style={styles.phoneNumber}>{phone}</Text>
+          <View style={{
+            marginTop:"7%",
+            alignItems:"center"
+          }}>
+            <Text style={styles.text}>Please confirm PIN for</Text>
+            <Text style={styles.subText}>+234 8106 726 089</Text>
+          </View>
         </View>
 
-        <View>
-          <CodeField
-            ref={ref}
-            {...props}
-            value={value}
-            onChangeText={setValue}
-            cellCount={CELL_COUNT}
-            rootStyle={(styles.codeFieldRoot, styles.inputContainer)}
-            keyboardType="number-pad"
-            textContentType="oneTimeCode"
-            renderCell={({index, symbol, isFocused}) => (
-              <Text
-                key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
-                {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
-            )}
-          />
+        <View style={styles.form}>
+
+          <View style={styles.inputContainer}>
+            <PinInput />
+          </View>
+
+        
+          <View>
+            <Button 
+              text="Continue"
+              bordered
+              onPress={()=>navigation.navigate("SignUpSuccess")}
+            />
+          </View>
+         
         </View>
-        <View>
-          <Button
-            text="Continue"
-            type="filled"
-            bordered
-            size="large"
-            onPress={onPress}
-          />
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingTop: 10,
+  header:{
+    paddingVertical:'3%',
+    marginHorizontal:"3%"
   },
-
-  inner: {
-    flex: 1,
-    justifyContent: 'space-around',
+  logo:{
+    width:per_height(6),
+    height:per_height(6),
   },
-
-  input: {
-    backgroundColor: 'red',
-    padding: SIZES.base * 1,
-    backgroundColor: '#F1F3FA',
-    borderRadius: SIZES.base * 1,
+  topContain:{
+    alignItems:"center"
   },
-  //   style for inputText
-  inputText: {
-    fontSize: SIZES.base * 2,
-    color: COLORS.appPrimary,
-    fontWeight: 'bold',
-    marginRight: SIZES.base * 2,
-    backgroundColor: '#F1F3FA',
-    padding: SIZES.base * 1,
-    borderRadius: SIZES.base * 1,
+  form:{
+    marginTop:"5%"
   },
-
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 5,
-    color: COLORS.appPrimary,
+  text:{
+    fontWeight:"500",
+    fontSize:moderateScale(16),
+    color:"rgba(38, 38, 38, 0.6)",
   },
-
-  text: {
-    color: '#4E5C80',
-    fontSize: 16,
-    fontWeight: '500',
-    marginTop: 20,
+  subText:{
+    fontWeight:"500",
+    marginTop:"1%",
+    fontSize:moderateScale(16),
+    color:"rgba(38, 38, 38, 0.6)",
   },
-
-  topContain: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  inputContainer:{
+    marginBottom:"8%"
   },
-
-  root: {padding: 20, minHeight: 200},
-  title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 5},
-  cell: {
-    width: 60,
-    height: 50,
-    lineHeight: 38,
-    fontSize: 24,
-    borderWidth: 2,
-    borderColor: '#E9ECF4',
-    textAlign: 'center',
-    backgroundColor: '#F1F3FA',
-    borderRadius: 10,
-    paddingTop: 5,
+  radio: {
   },
-  focusCell: {
-    borderColor: '#F1F3FA',
+  hightlightText: {
+    color: '#4A5AFF',
   },
-
-  phoneNumber: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: '500',
-    color: COLORS.dark_2,
-    //   color:Color.dark_2,
+  radioText:{
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
+  },
+  code:{
+    borderRightWidth:1,
+    paddingHorizontal:"5%",
+    justifyContent:"center",
+    alignItems:"center"
   },
 });
