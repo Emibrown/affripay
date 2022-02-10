@@ -2,10 +2,11 @@ import React, {useEffect} from 'react';
 import { Provider as StoreProvider } from 'react-redux'
 import configureStore from './app/stores/configureStore';
 import Navigation from './app/navigation';
+import CodePush from 'react-native-code-push'
 const store = configureStore()
 
 
-export default function App() {
+const App = ()=> {
 
   useEffect( () => {
 
@@ -17,3 +18,8 @@ export default function App() {
     </StoreProvider>
   );
 }
+const codePushOptions = {
+  checkFrequency:CodePush.CheckFrequency.ON_APP_START
+}
+
+export default CodePush(codePushOptions)(App)

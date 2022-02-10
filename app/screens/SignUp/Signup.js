@@ -142,94 +142,100 @@ export default function SignUp({navigation, route}) {
       }) => (
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.container}>
+          style={[styles.container]}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.inner}>
-              <View style={styles.topContain}>
-                <Image style={styles.logo} source={Logo} />
+            <View style={[styles.inner]}>
+              <View>
+                <View style={styles.topContain}>
+                  <Image style={styles.logo} source={Logo} />
 
-                <Text style={styles.text}>Create your account</Text>
-              </View>
-
-              <View style={styles.signupForm}>
-                <View style={styles.signupInputContainer}>
-                  <IconlyProvider
-                    set="light"
-                    primaryColor="#959FBA"
-                    secondaryColor="blue"
-                    stroke="bold"
-                    size="small">
-                    <User />
-                  </IconlyProvider>
-                  <TextInput
-                    style={styles.signupinput}
-                    placeholder="Username"
-                    onChangeText={handleChange('username')}
-                    onBlur={handleBlur('username')}
-                    value={values.username}></TextInput>
+                  <Text style={styles.text}>Create your account</Text>
                 </View>
-                {touched.username && errors.username && (
-                  <Text style={styles.error} status="danger">
-                    {errors.username}
-                  </Text>
-                )}
-                <View style={styles.signupInputContainer}>
-                  <IconlyProvider
-                    set="light"
-                    primaryColor="#959FBA"
-                    secondaryColor="#959FBA"
-                    stroke="bold"
-                    size="large">
-                    <Call />
-                  </IconlyProvider>
 
-                  <TextInput
-                    keyboardType="numeric"
-                    style={styles.signupinput}
-                    placeholder="Phone"
-                    onChangeText={handleChange('phone')}
-                    onBlur={handleBlur('phone')}
-                    value={values.phone}></TextInput>
+                <View style={styles.signupForm}>
+                  <View style={styles.signupInputContainer}>
+                    <IconlyProvider
+                      set="light"
+                      primaryColor="#959FBA"
+                      secondaryColor="blue"
+                      stroke="bold"
+                      size="small">
+                      <User />
+                    </IconlyProvider>
+                    <TextInput
+                      style={styles.signupinput}
+                      placeholder="Username"
+                      onChangeText={handleChange('username')}
+                      onBlur={handleBlur('username')}
+                      value={values.username}></TextInput>
+                  </View>
+                  {touched.username && errors.username && (
+                    <Text style={styles.error} status="danger">
+                      {errors.username}
+                    </Text>
+                  )}
+                  <View style={styles.signupInputContainer}>
+                    <IconlyProvider
+                      set="light"
+                      primaryColor="#959FBA"
+                      secondaryColor="#959FBA"
+                      stroke="bold"
+                      size="large">
+                      <Call />
+                    </IconlyProvider>
+
+                    <TextInput
+                      keyboardType="numeric"
+                      style={styles.signupinput}
+                      placeholder="Phone"
+                      onChangeText={handleChange('phone')}
+                      onBlur={handleBlur('phone')}
+                      value={values.phone}></TextInput>
+                  </View>
+                  {touched.phone && errors.phone && (
+                    <Text style={styles.error} status="danger">
+                      {errors.phone}
+                    </Text>
+                  )}
+
+                  {/* <View style={styles.signupInputContainer}> */}
+                    {/* <PasswordIcon /> */}
+
+                    {/* <PswIcon /> */}
+  {/* 
+                    <TextInput
+                      style={styles.signupinput}
+                      secureTextEntry={true}
+                      autoCorrect={false}
+                      placeholder="Enter Password"
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}></TextInput> */}
+                  {/* </View> */}
+                  {/* {touched.password && errors.password && (
+                    <Text style={styles.error} status="danger">
+                      {errors.password}
+                    </Text>
+                  )} */}
+
+                  {/* <View style={styles.termsandcondtioncontainer}>
+                    <Radio
+                      checked={checked}
+                      onChange={nextChecked => setChecked(nextChecked)}></Radio>
+                    <Text style={styles.termsandcondtionText}>
+                      Agree to{' '}
+                      <Text style={styles.tandcLink}> Terms of Service </Text>
+                      and<Text style={styles.tandcLink}> Terms of Use </Text>
+                    </Text>
+                  </View> */}
                 </View>
-                {touched.phone && errors.phone && (
-                  <Text style={styles.error} status="danger">
-                    {errors.phone}
-                  </Text>
-                )}
-
-                {/* <View style={styles.signupInputContainer}> */}
-                  {/* <PasswordIcon /> */}
-
-                  {/* <PswIcon /> */}
-{/* 
-                  <TextInput
-                    style={styles.signupinput}
-                    secureTextEntry={true}
-                    autoCorrect={false}
-                    placeholder="Enter Password"
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}></TextInput> */}
-                {/* </View> */}
-                {/* {touched.password && errors.password && (
-                  <Text style={styles.error} status="danger">
-                    {errors.password}
-                  </Text>
-                )} */}
-
-                {/* <View style={styles.termsandcondtioncontainer}>
-                  <Radio
-                    checked={checked}
-                    onChange={nextChecked => setChecked(nextChecked)}></Radio>
-                  <Text style={styles.termsandcondtionText}>
-                    Agree to{' '}
-                    <Text style={styles.tandcLink}> Terms of Service </Text>
-                    and<Text style={styles.tandcLink}> Terms of Use </Text>
-                  </Text>
-                </View> */}
               </View>
 
               <View>
+                <Text style={styles.termsandcondtionText}>Agree to <Text style={{color:COLORS.blue}}>Terms of Service</Text> and <Text style={{color:COLORS.blue}}>Terms of Use</Text></Text>
+              </View>
+
+              <View style={{paddingTop:40}}>
                 <Button
                   text="Sign Up"
                   type="filled"
@@ -250,15 +256,14 @@ export default function SignUp({navigation, route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#fff',
     paddingVertical: 10,
   },
 
   inner: {
     flex: 1,
-    justifyContent: 'space-between',
-    // justifyContent: 'center',
+    justifyContent:'flex-start',
+    paddingHorizontal:15
   },
 
   input: {
@@ -297,6 +302,7 @@ const styles = StyleSheet.create({
   topContain: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom:30
   },
 
   focusCell: {
@@ -314,7 +320,7 @@ const styles = StyleSheet.create({
   signupInputContainer: {
     backgroundColor: COLORS.dark_8,
     borderRadius: 6,
-    marginVertical: 10,
+    marginVertical: 15,
     display: 'flex',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
@@ -349,10 +355,10 @@ const styles = StyleSheet.create({
   },
 
   termsandcondtionText: {
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: '400',
     textAlign: 'center',
-    flex: 1,
+    paddingVertical:10,
   },
 
   tandcLink: {
