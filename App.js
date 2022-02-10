@@ -3,6 +3,8 @@ import { Provider as StoreProvider } from 'react-redux'
 import configureStore from './app/stores/configureStore';
 import Navigation from './app/navigation';
 import CodePush from 'react-native-code-push'
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider} from '@ui-kitten/components';
 const store = configureStore()
 
 
@@ -14,7 +16,9 @@ const App = ()=> {
 
   return (
     <StoreProvider store={store}>
-      <Navigation/>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <Navigation/>
+      </ApplicationProvider>
     </StoreProvider>
   );
 }

@@ -1,374 +1,167 @@
 import React, {useState} from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Platform,
   Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator,
+  Dimensions,
+  StyleSheet,
   TouchableOpacity,
-  Text
+  Text,
+  ScrollView
 } from 'react-native';
-import * as yup from 'yup';
 import {Formik} from 'formik';
-
-import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
+import {SafeAreaView } from 'react-native-safe-area-context';
 import {
   IconlyProvider,
   Home,
   Notification,
   User,
+  ArrowLeft,
+  ChevronLeft,
   Call,
   Phone,
 } from 'react-native-iconly';
-
-import axios from 'axios';
-
-// get device unique id
-import DeviceInfo from 'react-native-device-info';
-
-const CELL_COUNT = 4;
-import {COLORS, SIZES} from '../../constants/index';
 import Logo from '../../assets/images/logo.png';
-
-import GradientText from '../../constants/gradientText';
 import Button from '../../components/Button';
-
 import PswIcon from '../../assets/images/PasswordIcon.svg';
-
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { moderateScale } from 'react-native-size-matters';
+import CustomTextInput from '../../components/CustomTextInput';
+import {Radio} from '@ui-kitten/components';
+import Header from '../../components/Header';
+const { width, height } = Dimensions.get('window');
 
-const phoneRegExp = /^(?=.*\d).{8,}$/;
-const userName = /^[a-zA-Z0-9]{6,}$/;
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
 
-let signUpSchema = yup.object().shape({
-  username: yup
-    .string()
-    .trim('Username name cannot include spaces')
-    .strict(true)
-    .required()
-    .matches(userName, 'Username must be at least 6 characters long'),
 
-  // password: yup
-  //   .string()
-  //   .required('Please Enter your password')
-  //   .matches(/^(?=.*\d).{8,}$/, 'Must Contain at least 8 Characters'),
-  phone: yup
-    .string()
-    .required('Please Enter your Phone Number')
-    .matches(phoneRegExp, 'Phone number is not valid'),
-});
+
 export default function SignUp({navigation, route}) {
-  const [value, setValue] = useState('');
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [checked, setChecked] = React.useState(false);
-  const [error, seterror] = useState(false);
-
-  const onPress = () => {
-    // alert(value);4
-  };
 
 
-  let deviceId = DeviceInfo.getUniqueId();
-
-  console.log(deviceId, 'device id');
+  const [activeChecked, setActiveChecked] = React.useState(true);
+  
 
   return (
-    <Formik
-      initialValues={{username: '', password: 'password123', phone: ''}}
-      onSubmit={values => {
-        // alert(JSON.stringify(values, null, 2));
+    <SafeAreaView style={{
+      flex:1,
+      backgroundColor:"white"
+    }}>
+      <Header />
+      <ScrollView style={{paddingHorizontal:"7%"}}>
 
-        setIsLoading(true);
-        let data = JSON.stringify({
-          username: values.username,
-          phone: values.phone,
-          password: values.password,
-          device_hash: deviceId,
-        });
+        <View style={styles.topContain}>
+          <Image style={styles.logo} source={Logo} />
+          <Text style={styles.text}>Create your account</Text>
+        </View>
 
-        let config = {
-          method: 'post',
-          url: 'https://afrirpayuserservice.herokuapp.com/api/v1/auth/register',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          data: data,
-        };
+        <View style={styles.form}>
 
-        axios(config)
-          .then(response => {
-            console.log(JSON.stringify(response.data));
+          <View style={styles.inputContainer}>
+            <CustomTextInput 
+              placeholder="User Name"
+              left={()=>(
+                <IconlyProvider
+                  primaryColor="#959FBA"
+                >
+                  <User />
+                </IconlyProvider>
+              )}
+            />
+          </View>
 
-            // setIsLoading(false);
-          })
-          .then(() => {
-            navigation.navigate('SignUpOtp', {
-              phone: values.phone,
-              username: values.username,
-              password: values.password,
-            });
-          })
-
-          .catch(function (error) {
-            alert(error.response.data.message);
-
-            console.log(error);
-          });
-      }}
-      validateOnMount={true}
-      validationSchema={signUpSchema}>
-      {({
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        values,
-        touched,
-        errors,
-        isValid,
-      }) => (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={[styles.container]}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={[styles.inner]}>
-              <View>
-                <View style={styles.topContain}>
-                  <Image style={styles.logo} source={Logo} />
-
-                  <Text style={styles.text}>Create your account</Text>
+          <View style={styles.inputContainer}>
+            <CustomTextInput 
+              placeholder="Phone Number"
+              keyboardType="numeric"
+              left={()=>(
+                <View style={{
+                  flexDirection:"row",
+                  borderRightWidth:2,
+                  borderRightColor:"#D3D8E8",
+                  alignItems:"center",
+                }}>
+                  <IconlyProvider
+                    primaryColor="#959FBA"
+                  >
+                    <Call />
+                  </IconlyProvider>
+                  <TouchableOpacity style={{
+                    marginHorizontal:moderateScale(14)
+                  }}>
+                    <Text style={{
+                      color:"#182D64",
+                      fontWeight:"bold",
+                      fontSize:moderateScale(14)
+                    }}>
+                    +61
+                    </Text>
+                  </TouchableOpacity>
                 </View>
+              )}
+            />
+          </View>
 
-                <View style={styles.signupForm}>
-                  <View style={styles.signupInputContainer}>
-                    <IconlyProvider
-                      set="light"
-                      primaryColor="#959FBA"
-                      secondaryColor="blue"
-                      stroke="bold"
-                      size="small">
-                      <User />
-                    </IconlyProvider>
-                    <TextInput
-                      style={styles.signupinput}
-                      placeholder="Username"
-                      onChangeText={handleChange('username')}
-                      onBlur={handleBlur('username')}
-                      value={values.username}></TextInput>
-                  </View>
-                  {touched.username && errors.username && (
-                    <Text style={styles.error} status="danger">
-                      {errors.username}
-                    </Text>
-                  )}
-                  <View style={styles.signupInputContainer}>
-                    <IconlyProvider
-                      set="light"
-                      primaryColor="#959FBA"
-                      secondaryColor="#959FBA"
-                      stroke="bold"
-                      size="large">
-                      <Call />
-                    </IconlyProvider>
-
-                    <TextInput
-                      keyboardType="numeric"
-                      style={styles.signupinput}
-                      placeholder="Phone"
-                      onChangeText={handleChange('phone')}
-                      onBlur={handleBlur('phone')}
-                      value={values.phone}></TextInput>
-                  </View>
-                  {touched.phone && errors.phone && (
-                    <Text style={styles.error} status="danger">
-                      {errors.phone}
-                    </Text>
-                  )}
-
-                  {/* <View style={styles.signupInputContainer}> */}
-                    {/* <PasswordIcon /> */}
-
-                    {/* <PswIcon /> */}
-  {/* 
-                    <TextInput
-                      style={styles.signupinput}
-                      secureTextEntry={true}
-                      autoCorrect={false}
-                      placeholder="Enter Password"
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      value={values.password}></TextInput> */}
-                  {/* </View> */}
-                  {/* {touched.password && errors.password && (
-                    <Text style={styles.error} status="danger">
-                      {errors.password}
-                    </Text>
-                  )} */}
-
-                  {/* <View style={styles.termsandcondtioncontainer}>
-                    <Radio
-                      checked={checked}
-                      onChange={nextChecked => setChecked(nextChecked)}></Radio>
-                    <Text style={styles.termsandcondtionText}>
-                      Agree to{' '}
-                      <Text style={styles.tandcLink}> Terms of Service </Text>
-                      and<Text style={styles.tandcLink}> Terms of Use </Text>
-                    </Text>
-                  </View> */}
-                </View>
-              </View>
-
-              <View>
-                <Text style={styles.termsandcondtionText}>Agree to <Text style={{color:COLORS.blue}}>Terms of Service</Text> and <Text style={{color:COLORS.blue}}>Terms of Use</Text></Text>
-              </View>
-
-              <View style={{paddingTop:40}}>
-                <Button
-                  text="Sign Up"
-                  type="filled"
-                  bordered
-                  size="large"
-                  isDisabled={!isValid}
-                  onPress={handleSubmit}
-                />
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
-      )}
-    </Formik>
+          <View style={{
+            marginBottom:"8%",
+          }}>
+            <Radio
+              style={styles.radio}
+              checked={activeChecked}
+              onChange={nextChecked => setActiveChecked(nextChecked)}>
+              <Text style={styles.radioText}>Agree to <Text style={styles.hightlightText}>Terms of Service</Text> and <Text style={styles.hightlightText}>Terms of Use</Text></Text>
+            </Radio>
+          </View>
+          <View>
+            <Button 
+              text="Sign Up"
+              bordered
+              onPress={()=>navigation.navigate("SignupOtp")}
+            />
+          </View>
+         
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingVertical: 10,
+  header:{
+    paddingVertical:'3%',
+    marginHorizontal:"3%"
   },
-
-  inner: {
-    flex: 1,
-    justifyContent:'flex-start',
-    paddingHorizontal:15
+  logo:{
+    width:per_height(6),
+    height:per_height(6),
   },
-
-  input: {
-    backgroundColor: 'red',
-    padding: SIZES.base * 1,
-    backgroundColor: '#F1F3FA',
-    borderRadius: SIZES.base * 1,
+  topContain:{
+    alignItems:"center"
   },
-  //   style for inputText
-  inputText: {
-    fontSize: SIZES.base * 2,
-    color: COLORS.appPrimary,
-    fontWeight: 'bold',
-    marginRight: SIZES.base * 2,
-    backgroundColor: '#F1F3FA',
-    padding: SIZES.base * 1,
-    borderRadius: SIZES.base * 1,
+  form:{
+    marginTop:"5%"
   },
-
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 5,
-    color: COLORS.appPrimary,
+  text:{
+    fontWeight:"500",
+    fontSize:moderateScale(16),
+    color:"#4E5C80",
+    marginVertical:"5%",
   },
-
-  text: {
-    color: '#4E5C80',
-    fontSize: 16,
-    fontWeight: '500',
-    marginTop: 20,
+  inputContainer:{
+    marginBottom:"8%"
   },
-
-  topContain: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom:30
+  radio: {
   },
-
-  focusCell: {
-    borderColor: '#F1F3FA',
+  hightlightText: {
+    color: '#4A5AFF',
   },
-
-  phoneNumber: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: '500',
-    color: COLORS.dark_2,
-    //   color:Color.dark_2,
+  radioText:{
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
   },
-
-  signupInputContainer: {
-    backgroundColor: COLORS.dark_8,
-    borderRadius: 6,
-    marginVertical: 15,
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  signupinput: {
-    flex: 1,
-    marginLeft: 10,
-    paddingVertical: 15,
-    color: '#4E5C80',
-    fontWeight: '400',
-    fontSize: 14,
-  },
-  number: {
-    fontWeight: '700',
-    fontSize: 14,
-    marginLeft: 10,
-    paddingVertical: 5,
-    paddingRight: 8,
-    borderRightWidth: 2,
-    borderRightColor: '#D3D8E8',
-  },
-
-  termsandcondtioncontainer: {
-    flexDirection: 'row',
-    // justifyContent: 'space-around',
-
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-
-  termsandcondtionText: {
-    fontSize: 16,
-    fontWeight: '400',
-    textAlign: 'center',
-    paddingVertical:10,
-  },
-
-  tandcLink: {
-    color: '#0645AD',
-    fontSize: 12,
-    fontWeight: '400',
-    textAlign: 'center',
-  },
-
-  error: {
-    fontSize: 11,
+  code:{
+    borderRightWidth:1,
+    paddingHorizontal:"5%",
+    justifyContent:"center",
+    alignItems:"center"
   },
 });
