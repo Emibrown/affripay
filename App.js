@@ -23,7 +23,8 @@ const App = ()=> {
   );
 }
 const codePushOptions = {
-  checkFrequency:CodePush.CheckFrequency.ON_APP_START
+  checkFrequency:CodePush.CheckFrequency.ON_APP_START,
+  installMode: CodePush.InstallMode.IMMEDIATE
 }
 
 export default CodePush(codePushOptions)(App)
