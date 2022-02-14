@@ -8,7 +8,7 @@ import { ApplicationProvider} from '@ui-kitten/components';
 const store = configureStore()
 
 
-const App = ()=> {
+const App = (props)=> {
 
   useEffect( () => {
 
@@ -17,7 +17,7 @@ const App = ()=> {
   return (
     <StoreProvider store={store}>
       <ApplicationProvider {...eva} theme={eva.light}>
-        <Navigation/>
+        <Navigation {...props}/>
       </ApplicationProvider>
     </StoreProvider>
   );

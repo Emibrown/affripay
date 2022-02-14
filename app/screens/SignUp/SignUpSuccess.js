@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { switchToDashboard } from '../../stores/actionCreators'
 import {
   View,
   Image,
@@ -39,7 +41,7 @@ const per_width = (value) => (value*width)/100
 
 export default function SignupPin({navigation, route}) {
   
-
+  const dispatch = useDispatch()
   return (
     <SafeAreaView style={{
       flex:1,
@@ -81,7 +83,9 @@ export default function SignupPin({navigation, route}) {
           <Button 
             text="Let’s go"
             bordered
-            onPress={()=>navigation.navigate("")}
+            onPress={()=>{
+              navigation.getParent().navigate("AppNavigator")
+            }}
           />
         </View>
 

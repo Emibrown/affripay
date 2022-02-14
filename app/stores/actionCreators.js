@@ -1,5 +1,6 @@
 import {
   RESTORE_APP,
+  SWITCH_TO_DASHBOARD
 } from "./action";
 import { getAppState } from "../utils/db";
 
@@ -19,7 +20,12 @@ export const restoreApp = () => {
 }
 
 
-
+export const switchToDashboard = ()=> (dispatch)=>{
+  dispatch({
+    type: RESTORE_APP,
+    payload:2
+  })
+}
 
 
 
