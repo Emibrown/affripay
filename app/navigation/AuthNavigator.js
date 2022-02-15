@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Login from '../screens/Login/Login';
 import EnterLoginPin from '../screens/Login/EnterLoginPin';
-import SignupOtp from '../screens/SignUp/SignupOtp';
+import SignupOtp from '../screens/SignUp/SignUpOtp';
 import SignupPin from '../screens/SignUp/SignupPin';
 import ConfirmPin from '../screens/SignUp/ConfirmPin';
 import Signup from '../screens/SignUp/Signup';

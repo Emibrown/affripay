@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import { switchToDashboard } from '../../stores/actionCreators'
 import {
   View,
   Image,
@@ -44,7 +46,6 @@ export default function SignupPin({navigation, route}) {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
-
   return (
     <SafeAreaView style={{
       flex:1,
@@ -86,6 +87,7 @@ export default function SignupPin({navigation, route}) {
             text="Let’s go"
             bordered
             onPress={()=>dispatch(changeState())}
+
           />
         </View>
 

@@ -36,7 +36,12 @@ export const changeState = () => {
 
 
 
-
+export const switchToDashboard = ()=> (dispatch)=>{
+  dispatch({
+    type: RESTORE_APP,
+    payload:2
+  })
+}
 
 
 
