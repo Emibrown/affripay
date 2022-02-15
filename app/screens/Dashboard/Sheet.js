@@ -10,13 +10,18 @@ const Sheet = () => {
     <View style={styles.container}>
       <View style={styles.tabBtnContainer}>
         <TouchableOpacity
-          style={[styles.tabBtn]}
+          style={[
+            {
+              borderBottomWidth: 1.5,
+              borderBottomColor: currentTab === 0 ? '#407BFF' : 'white',
+            },
+            styles.tabBtn
+          ]}
           onPress={() => setCurrentTab(0)}>
           <Text
             style={[
               {
                 color: currentTab === 0 ? '#4E5C80' : '#4E5C8070',
-                borderBottomColor: currentTab === 0 ? '#407BFF' : 'white',
               },
               styles.tabText,
             ]}>
@@ -24,13 +29,18 @@ const Sheet = () => {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.tabBtn]}
+          style={[
+            {
+              borderBottomWidth: 1.5,
+              borderBottomColor: currentTab === 1 ? '#407BFF' : 'white',
+            },
+            styles.tabBtn
+          ]}
           onPress={() => setCurrentTab(1)}>
           <Text
             style={[
               {
                 color: currentTab === 1 ? '#4E5C80' : '#4E5C8070',
-                borderBottomColor: currentTab === 1 ? '#407BFF' : 'white',
               },
               styles.tabText,
             ]}>
@@ -48,21 +58,27 @@ export default Sheet;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:"white",
+    borderRadius:20,
     flex: 1,
-    padding: 20,
+    paddingTop: 5,
+    paddingHorizontal:20,
     width: '100%',
   },
   tabBtnContainer: {
+    paddingTop:10,
+    marginBottom:5,
+    paddingHorizontal:20,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
   },
   tabBtn: {
+    paddingTop:"5%",
     textAlign: 'center',
     marginRight: 15,
   },
   tabText: {
-    borderBottomWidth: 1.5,
     textAlign: 'center',
   },
   tabView: {

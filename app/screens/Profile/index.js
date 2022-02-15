@@ -37,7 +37,7 @@ const Profile = () => {
   const [isDark, setDarkTheme] = useState(false);
   const [isPN, setPushNotification] = useState(false);
   const navigation = useNavigation();
-  const {signOut} = useContext(AuthContext);
+  // const {signOut} = useContext(AuthContext);
 
   const [userdata, setUserData] = useState({});
   let {username, phone} = userdata;
@@ -62,7 +62,7 @@ const Profile = () => {
   }, []);
 
   const handleLogOut = () => {
-    signOut();
+    // signOut();
   };
 
   return (

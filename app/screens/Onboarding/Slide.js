@@ -5,6 +5,7 @@ import { moderateScale } from 'react-native-size-matters';
 
 const { width, height } = Dimensions.get('window');
 const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
 
 export default function Slide({
   img,
@@ -15,9 +16,9 @@ export default function Slide({
     <View style={styles.slide}>
       <View style={{
         alignItems:"center",
-        paddingTop:"25%"
+        // paddingTop:"25%"
       }}>
-        <Image style={styles.imageBox} source={img}  resizeMode="contain"/>
+        <Image style={styles.imageBox} source={img}  resizeMode="contain" />
       </View>
       <View style={styles.textBox}>
         <Text style={styles.title}>
@@ -36,10 +37,11 @@ const styles = StyleSheet.create({
     width,
   },
   imageBox:{
-    height:per_height(30)
+    width:per_height(30),
+    height:per_height(30),
   },
   textBox:{
-    paddingTop:"10%"
+    marginTop:"10%"
   },
   title:{
     fontSize:moderateScale(24),
@@ -56,6 +58,6 @@ const styles = StyleSheet.create({
     lineHeight:22,
     color:"#7581A1",
     textAlign:"center",
-    marginHorizontal:"5%"
+    marginHorizontal:"10%"
   }
 });

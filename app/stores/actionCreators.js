@@ -1,6 +1,6 @@
 import {
   RESTORE_APP,
-  SWITCH_TO_DASHBOARD
+  APP_STATE
 } from "./action";
 import { getAppState } from "../utils/db";
 
@@ -18,6 +18,22 @@ export const restoreApp = () => {
     dispatch(action);
   };
 }
+
+export const changeState = () => {
+  return async (dispatch,getState) => {
+    const appState = await getAppState()
+
+    const action = {
+      type: APP_STATE ,
+      payload:{
+        appState:2
+      }
+    }
+
+    dispatch(action);
+  };
+}
+
 
 
 export const switchToDashboard = ()=> (dispatch)=>{

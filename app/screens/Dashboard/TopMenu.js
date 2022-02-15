@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, Text} from 'react-native';
+import {StyleSheet, View, Image, Text,Platform} from 'react-native';
 import {useNavigation} from '@react-navigation/core';
 import Person from '../../assets/images/p2.png';
 import GlobalStyles from '../../style/globalStyle';
@@ -50,7 +50,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    paddingTop:Platform.OS == "android"?15:0,
+    paddingHorizontal: 20,
+    paddingBottom:20
+    // padding: 20,
   },
   image: {
     width: 46,
