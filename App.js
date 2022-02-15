@@ -8,7 +8,7 @@ import { ApplicationProvider} from '@ui-kitten/components';
 const store = configureStore()
 
 
-const App = ()=> {
+const App = (props)=> {
 
   useEffect( () => {
 
@@ -17,13 +17,14 @@ const App = ()=> {
   return (
     <StoreProvider store={store}>
       <ApplicationProvider {...eva} theme={eva.light}>
-        <Navigation/>
+        <Navigation {...props}/>
       </ApplicationProvider>
     </StoreProvider>
   );
 }
 const codePushOptions = {
-  checkFrequency:CodePush.CheckFrequency.ON_APP_START
+  checkFrequency:CodePush.CheckFrequency.ON_APP_START,
+  installMode: CodePush.InstallMode.IMMEDIATE
 }
 
 export default CodePush(codePushOptions)(App)

@@ -1,6 +1,6 @@
 export const RESTORE_APP = 'RESTORE_APP'
 
-
+export const SWITCH_TO_DASHBOARD = "SWITCH_TO_DASHBOARD"
 
 
 

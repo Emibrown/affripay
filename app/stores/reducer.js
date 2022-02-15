@@ -1,5 +1,6 @@
 import {
     RESTORE_APP,
+    SWITCH_TO_DASHBOARD
 } from "./action";
 
 const initialState = {
@@ -16,6 +17,12 @@ const Reducer = (state = initialState, action) => {
             appLoading: false,
             appState: action.payload.appState,
         };
+
+    case SWITCH_TO_DASHBOARD:
+        return{
+            ...state,
+            appState:2
+        }
   }
   return state
 }
