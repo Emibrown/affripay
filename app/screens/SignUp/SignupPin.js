@@ -67,9 +67,9 @@ export default function SignupPin({navigation, route}) {
         
           <View>
             <Button 
-              text="Continue"
+              text="Next"
               bordered
-              onPress={()=>navigation.navigate("SignUpSuccess")}
+              onPress={()=>navigation.navigate("ConfirmPin")}
             />
           </View>
          

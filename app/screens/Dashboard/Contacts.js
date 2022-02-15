@@ -59,7 +59,7 @@ const Contacts = ({title, description, isFlag, showAll}) => {
         {title}
       </Text>
       {description && <Text style={styles.description}>{description}</Text>}
-      <ScrollView horizontal>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {lists.map((item, idx) => (
           <TouchableOpacity
             key={item.id}

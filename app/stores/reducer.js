@@ -1,5 +1,6 @@
 import {
     RESTORE_APP,
+    APP_STATE
 } from "./action";
 
 const initialState = {
@@ -14,6 +15,11 @@ const Reducer = (state = initialState, action) => {
         return {
             ...state,
             appLoading: false,
+            appState: action.payload.appState,
+        };
+    case APP_STATE:
+        return {
+            ...state,
             appState: action.payload.appState,
         };
   }

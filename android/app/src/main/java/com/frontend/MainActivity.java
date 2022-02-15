@@ -7,7 +7,7 @@ import android.os.Bundle;
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    SplashScreen.show(this, R.style.SplashTheme, true);
+    SplashScreen.show(this, R.style.SplashTheme, false);
     super.onCreate(savedInstanceState);
   }
   /**

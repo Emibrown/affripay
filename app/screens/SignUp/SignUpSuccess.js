@@ -1,182 +1,146 @@
 import React, {useState} from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  TextInput,
-  StyleSheet,
-  Platform,
   Image,
-  TouchableWithoutFeedback,
-  Keyboard,
-  ScrollView,
-  SafeAreaView,
-  ImageBackground,
-  Alert,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ScrollView
 } from 'react-native';
-
+import {Formik} from 'formik';
+import {SafeAreaView } from 'react-native-safe-area-context';
 import {
-  CodeField,
-  Cursor,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
-
-import {Text} from '@ui-kitten/components';
-
-const CELL_COUNT = 4;
-import {COLORS, SIZES} from '../../constants/index';
+  IconlyProvider,
+  Home,
+  Notification,
+  User,
+  ArrowLeft,
+  ChevronLeft,
+  Call,
+  Phone,
+} from 'react-native-iconly';
 import Logo from '../../assets/images/logo.png';
-
-import GradientText from '../../constants/gradientText';
-import Thankyou from '../../assets/images/thankyou.svg';
-import successBg from '../../assets/images/successBg.png';
-
+import img from '../../assets/images/successGb.png';
 import Button from '../../components/Button';
+import PswIcon from '../../assets/images/PasswordIcon.svg';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { moderateScale } from 'react-native-size-matters';
+import CustomTextInput from '../../components/CustomTextInput';
+import {Radio} from '@ui-kitten/components';
+import Header from '../../components/Header';
+import PinInput from '../../components/PinInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeState } from '../../stores/actionCreators';
 
-export default function SignUpSuccess({navigation, route}) {
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+const { width, height } = Dimensions.get('window');
 
-  const onPress = () => {
-    navigation.navigate('Login');
-  };
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
+
+
+
+export default function SignupPin({navigation, route}) {
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={successBg}
-        style={styles.bgimage}
-        resizeMode="contain">
-        <View style={styles.inner}>
-          <View style={styles.topContain}>
-            <Image style={styles.logo} source={Logo} />
+    <SafeAreaView style={{
+      flex:1,
+      backgroundColor:"white"
+    }}>
+      <View style={{
+        flex:1,
+        justifyContent:"space-between",
+        paddingHorizontal:"7%",
+        paddingVertical:"8%"
+      }}>
 
-            {/* <Text style={styles.phoneNumber}>{realPhoneNumber}</Text> */}
-          </View>
-
-          <View style={styles.topContain}>
-            <Thankyou />
-
-            <Text style={styles.thankyoutext} category="h1">
-              Thank You
-            </Text>
-
-            <Text style={styles.signuptext} category="p1">
-              You have successfully signup
-            </Text>
-          </View>
-          <View>
-            <Button
-              text="Let's Go"
-              type="filled"
-              bordered
-              size="large"
-              onPress={onPress}
-            />
-          </View>
+        <View style={styles.topContain}>
+          <Image style={styles.logo} source={Logo} />
         </View>
-      </ImageBackground>
-    </View>
+
+
+        <View style={styles.inputContainer}>
+          <Image style={styles.img} source={img}  resizeMode="contain"/>
+          <Text  style={{
+            color:"#182D64",
+            fontWeight:'bold',
+            fontSize:moderateScale(24)
+          }}>
+          Thank you
+          </Text>
+          <Text style={{
+            color:"#959FBA",
+            fontSize:moderateScale(14),
+            fontWeight:'500',
+            marginTop:"2%"
+          }}>
+          You have successfully signup
+          </Text>
+        </View>
+
+        <View>
+          <Button 
+            text="Let’s go"
+            bordered
+            onPress={()=>dispatch(changeState())}
+          />
+        </View>
+
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingVertical: 10,
+  header:{
+    paddingVertical:'3%',
+    marginHorizontal:"3%"
   },
-
-  inner: {
-    flex: 1,
-    justifyContent: 'space-between',
+  logo:{
+    width:per_height(6),
+    height:per_height(6),
   },
-
-  input: {
-    backgroundColor: 'red',
-    padding: SIZES.base * 1,
-    backgroundColor: '#F1F3FA',
-    borderRadius: SIZES.base * 1,
+  img:{
+    width:per_height(25),
+    height:per_height(25),
   },
-  //   style for inputText
-  inputText: {
-    fontSize: SIZES.base * 2,
-    color: COLORS.appPrimary,
-    fontWeight: 'bold',
-    marginRight: SIZES.base * 2,
-    backgroundColor: '#F1F3FA',
-    padding: SIZES.base * 1,
-    borderRadius: SIZES.base * 1,
+  topContain:{
+    alignItems:"center"
   },
-
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 20,
-    marginBottom: 5,
-    color: COLORS.appPrimary,
+  form:{
+    marginTop:"5%"
   },
-
-  text: {
-    color: '#4E5C80',
-    fontSize: 16,
-    fontWeight: '500',
-    marginTop: 20,
+  text:{
+    fontWeight:"500",
+    fontSize:moderateScale(16),
+    color:"rgba(38, 38, 38, 0.6)",
   },
-
-  topContain: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  subText:{
+    fontWeight:"500",
+    marginTop:"1%",
+    fontSize:moderateScale(16),
+    color:"rgba(38, 38, 38, 0.6)",
   },
-
-  root: {padding: 20, minHeight: 200},
-  title: {textAlign: 'center', fontSize: 30},
-  codeFieldRoot: {marginTop: 5},
-  cell: {
-    width: 60,
-    height: 50,
-    lineHeight: 38,
-    fontSize: 24,
-    borderWidth: 2,
-    borderColor: '#E9ECF4',
-    textAlign: 'center',
-    backgroundColor: '#F1F3FA',
-    borderRadius: 10,
-    paddingTop: 5,
+  inputContainer:{
+    alignItems:"center",
+    marginTop:"-40%"
   },
-  focusCell: {
-    borderColor: '#F1F3FA',
+  radio: {
   },
-
-  phoneNumber: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: '500',
-    color: COLORS.dark_2,
-    //   color:Color.dark_2,
+  hightlightText: {
+    color: '#4A5AFF',
   },
-
-  thankyoutext: {
-    fontWeight: '700',
-    color: COLORS.dark_1,
-    fontSize: 24,
-    marginTop: 13,
+  radioText:{
+    fontSize:moderateScale(12),
+    fontWeight:"normal"
   },
-
-  signuptext: {
-    color: COLORS.dark_4,
-    marginVertical: 10,
-  },
-
-  bgimage: {
-    flex: 1,
-    justifyContent: 'center',
-    // width: 100, height: '50%'
+  code:{
+    borderRightWidth:1,
+    paddingHorizontal:"5%",
+    justifyContent:"center",
+    alignItems:"center"
   },
 });

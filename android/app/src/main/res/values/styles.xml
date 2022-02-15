@@ -15,11 +15,9 @@
     </style>
 
     <!-- Adds the splash screen definition -->
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowTranslucentNavigation">false</item>
+    <style name="SplashTheme" parent="Theme.AppCompat.Light">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">true</item>
-        <item name="android:windowFullscreen">true</item>
          <item name="android:windowFullscreen">true</item>
          
         <item name="android:statusBarColor">@color/splashscreen_bg</item>

@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import SpikeImg from '../../assets/images/Spike.png';
@@ -37,6 +38,13 @@ const lists = [
     image: WithDrawImg,
   },
 ];
+
+const { width, height } = Dimensions.get('window');
+
+const per_height = (value) => (value*height)/100
+const per_width = (value) => (value*width)/100
+
+
 
 const AssetCard = () => {
   const [selectedTab, setTab] = useState(1);
@@ -82,7 +90,7 @@ const AssetCard = () => {
       <View style={styles.functionCardsContainer}>
         {lists.map(item => (
           <View key={item.id} style={styles.functionCard}>
-            <Image source={item.image} />
+            <Image source={item.image} style={styles.img} />
             <Text style={styles.title}>{item.title}</Text>
           </View>
         ))}
@@ -150,8 +158,9 @@ const styles = StyleSheet.create({
   functionCard: {
     backgroundColor: 'white',
     borderRadius: 16,
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    width:"22%",
+    paddingHorizontal:"3%",
+    paddingVertical:"5%",
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -165,4 +174,8 @@ const styles = StyleSheet.create({
     color: '#4E5C80',
     marginTop: 10,
   },
+  img:{
+    width:per_width(8),
+    height:per_width(8)
+  }
 });

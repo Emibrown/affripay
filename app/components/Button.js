@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { moderateScale } from 'react-native-size-matters';
 
 const width = Dimensions.get('window').width;
 
@@ -21,16 +22,15 @@ const Button = ({
   const large = '100%';
   const small = 50;
   const btnWidth = size === 'large' ? large : small;
-  const btnHeight = size === 'large' ? 20 : 5;
-  const fontSize = size === 'large' ? 18 : 12;
+  const btnHeight = size === 'large' ? moderateScale(15) : moderateScale(6);
+  const fontSize = size === 'large' ? moderateScale(18) : moderateScale(12);
   const btnTextColor = type === 'filled' ? '#ffffff' : '#000000';
-  const btnBorderRadius = bordered ? 3 : 40;
+  const btnBorderRadius = bordered ? moderateScale(9) : 40;
 
   //   const disa  =  dis === true ?
 
   const containerCommonStyle = {
-    paddingVertical: btnHeight,
-    width: btnWidth,
+    width:"100%",
     overflow: 'hidden',
     display: 'flex',
     flexDirection: 'row',
@@ -45,7 +45,6 @@ const Button = ({
     fontSize: fontSize,
     textTransform: 'none',
     textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
     fontWeight: '700',
   };
 
@@ -60,31 +59,22 @@ const Button = ({
 
   if (type === 'outlined') {
     return (
-      <LinearGradient
-        colors={['#8B16FF', '#125FD2']}
-        locations={[0.4, 1]}
-        style={[
-          {
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-          },
-        ]}>
-        <TouchableOpacity style={styles.buttonContainer} onPress={onPress}>
-          <Text style={styles.buttonText}>{text}</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      <TouchableOpacity style={[containerCommonStyle, {borderRadius: btnBorderRadius},{borderWidth:1.5,borderColor:"#324CDE"}]} onPress={onPress} disabled={isDisa}>
+        <Text style={[textCommonStyle,styles.buttonText]}>{text}</Text>
+      </TouchableOpacity>
+
     );
   }
   return (
-    <LinearGradient
-      colors={buttonBackgroundColor}
-      locations={[0.4, 1]}
-      style={[containerCommonStyle, {borderRadius: btnBorderRadius}]}>
-      <TouchableOpacity onPress={onPress} activeOpacity={0.7} disabled={isDisa}>
-        <Text style={[textCommonStyle]}> {text} </Text>
-      </TouchableOpacity>
-    </LinearGradient>
+    <TouchableOpacity style={[containerCommonStyle, {borderRadius: btnBorderRadius}]} onPress={onPress} activeOpacity={0.7} disabled={isDisa}>
+      <LinearGradient
+        colors={buttonBackgroundColor}
+        locations={[0.0, 1]}
+        style={{flex:1, paddingVertical: btnHeight,}}
+        >
+          <Text style={[textCommonStyle]}> {text} </Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
@@ -103,16 +93,17 @@ const styles = StyleSheet.create({
     // alignSelf: 'center',
     // justifyContent: 'center',
     backgroundColor: '#ffffff',
-    width: '99%',
+    width: '100%',
     margin: 1,
     borderRadius: 5,
   },
   buttonText: {
     textAlign: 'center',
+    color:"#252B48",
     padding: 15,
     marginLeft: 1,
     marginRight: 1,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "500",
   },
 });

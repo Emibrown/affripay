@@ -24,7 +24,6 @@ const AppNavigator = () => {
           ...TransitionPresets.SlideFromRightIOS
       }}
     >
-
       <AppStack.Screen
         name="Main"
         component={BottomTabNavigator}

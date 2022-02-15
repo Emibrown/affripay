@@ -84,7 +84,7 @@ export default Escrow;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingHorizontal: 20,
     backgroundColor: 'white',
     width: '100%',
     flexGrow: 1,

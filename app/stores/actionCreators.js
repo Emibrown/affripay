@@ -1,5 +1,6 @@
 import {
   RESTORE_APP,
+  APP_STATE
 } from "./action";
 import { getAppState } from "../utils/db";
 
@@ -17,6 +18,22 @@ export const restoreApp = () => {
     dispatch(action);
   };
 }
+
+export const changeState = () => {
+  return async (dispatch,getState) => {
+    const appState = await getAppState()
+
+    const action = {
+      type: APP_STATE ,
+      payload:{
+        appState:2
+      }
+    }
+
+    dispatch(action);
+  };
+}
+
 
 
 
