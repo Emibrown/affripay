@@ -45,7 +45,6 @@ const Button = ({
     fontSize: fontSize,
     textTransform: 'none',
     textAlign: 'center',
-    fontFamily: 'Quicksand-Medium',
     fontWeight: '700',
   };
 

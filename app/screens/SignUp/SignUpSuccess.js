@@ -30,6 +30,9 @@ import CustomTextInput from '../../components/CustomTextInput';
 import {Radio} from '@ui-kitten/components';
 import Header from '../../components/Header';
 import PinInput from '../../components/PinInput';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeState } from '../../stores/actionCreators';
+
 const { width, height } = Dimensions.get('window');
 
 const per_height = (value) => (value*height)/100
@@ -38,7 +41,9 @@ const per_width = (value) => (value*width)/100
 
 
 export default function SignupPin({navigation, route}) {
-  
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
 
   return (
     <SafeAreaView style={{
@@ -76,12 +81,11 @@ export default function SignupPin({navigation, route}) {
           </Text>
         </View>
 
-      
         <View>
           <Button 
             text="Let’s go"
             bordered
-            onPress={()=>navigation.navigate("")}
+            onPress={()=>dispatch(changeState())}
           />
         </View>
 

@@ -1,5 +1,5 @@
 import React, {useEffect,useState,useRef} from 'react';
-import { StyleSheet, Dimensions, View,Text,TouchableOpacity,ScrollView,StatusBar} from 'react-native';
+import { StyleSheet, Dimensions, View,Text,Image,ScrollView,StatusBar} from 'react-native';
 import { primaryColor } from '../../style/color';
 import Slide from './Slide';
 import Indicator from './Indicator';
@@ -9,7 +9,7 @@ import img2 from "../../assets/images/Group1.png"
 import img3 from "../../assets/images/Group3.png"
 import img4 from "../../assets/images/Group2.png"
 import Button from '../../components/Button';
-import img5 from "../../assets/images/Group14701.png"
+import bg from "../../assets/images/bg.png"
 
 
 
@@ -92,70 +92,90 @@ export default function Onboarding({navigation}) {
     return (
         <View style={{...styles.container,backgroundColor:"white"}}>
             <StatusBar backgroundColor="white" barStyle="dark-content" />
-            <ScrollView
-                style={{
-                    flex:1
-                }}
-                ref={scrollEl}
-                horizontal={true}
-                scrollEventThrottle={16}
-                showsHorizontalScrollIndicator={false}
-                pagingEnabled={true}
-                onScroll={(event) => {
-                    setSliderPage(event);
-                }}
-            >
-                {
-                    slide.map((item,i)=>(
-                        <Slide 
-                            key={i}
-                            img={item.img}
-                            title={item.title}
-                            text={item.text}
-                        />
-                    ))
-                }
-            </ScrollView>
-            <View style={styles.footer}>
+            <View style={{
+                flex:1,
+            }}>
                 <View style={{
-                    flexDirection:"row",
-                    justifyContent:"center"
+                   height:"70%",
+                   flexDirection:"row",
+                //    backgroundColor:"red",
+                   justifyContent:"center",
+                   alignItems:"flex-end",
+                   paddingBottom:"5%"
                 }}>
-                    {
-                        slide.map((item,i)=>(
-                            <Indicator key={i} active={sliderState.currentPage == i} />
-                        ))
-                    }
+                    <ScrollView
+                        ref={scrollEl}
+                        horizontal={true}
+                        scrollEventThrottle={16}
+                        showsHorizontalScrollIndicator={false}
+                        pagingEnabled={true}
+                        onScroll={(event) => {
+                            setSliderPage(event);
+                        }}
+                    >
+                        {
+                            slide.map((item,i)=>(
+                                <Slide 
+                                    key={i}
+                                    img={item.img}
+                                    title={item.title}
+                                    text={item.text}
+                                />
+                            ))
+                        }
+                    </ScrollView>
+                </View>
+                <View style={styles.footer}>
+                    <View style={{
+                        flexDirection:"row",
+                        justifyContent:"center",
+                        // marginTop:"12%"
+                    }}>
+                        {
+                            slide.map((item,i)=>(
+                                <Indicator key={i} active={sliderState.currentPage == i} />
+                            ))
+                        }
+                    </View>
+
+                    <View style={{
+                        marginHorizontal:"10%",
+                        flexDirection:"row",
+                        justifyContent:"space-between",
+                        alignItems:"center",
+                        marginTop:"15%"
+                    }}>
+                        <View style={{
+                            width:"48%"
+                        }}>
+                            <Button 
+                                text="Login"
+                                bordered
+                                onPress={onPressLogin}
+                            />
+                        </View>
+                        <View style={{
+                            width:"48%"
+                        }}>
+                            <Button 
+                                text="Sign Up"
+                                bordered
+                                type="outlined"
+                                onPress={onPressSignup}
+                            />
+                        </View>
+                    </View>
                 </View>
                 <View style={{
-                    flex:1,
-                    marginHorizontal:"10%",
-                    flexDirection:"row",
-                    justifyContent:"space-between",
-                    alignItems:"center"
+                    width:"100%",
+                    position:"absolute",
+                    bottom:0,
+                    alignItems:"center",
+                    justifyContent:"center",
+                    zIndex:-1
                 }}>
-                    <View style={{
-                        width:"48%"
-                    }}>
-                         <Button 
-                            text="Login"
-                            bordered
-                            onPress={onPressLogin}
-                        />
-                    </View>
-                    <View style={{
-                        width:"48%"
-                    }}>
-                        <Button 
-                            text="Sign Up"
-                            bordered
-                            type="outlined"
-                            onPress={onPressSignup}
-                        />
-                    </View>
+                    <Image style={styles.imageBox} source={bg}  resizeMode="center" />
                 </View>
-                
-              
             </View>
         </View>
     );
@@ -165,9 +185,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  imageBox:{
+    width:per_height(100),
+    height:per_height(15),
+  },
   footer:{
-    height:per_height(30),
-    paddingTop:"10%"
+    // paddingTop:"15%",
+    flex:1,
+    justifyContent:"flex-end",
+    paddingBottom:"8%",
   },
   btn:{
     backgroundColor:primaryColor,

@@ -48,11 +48,17 @@ export default Sheet;
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor:"white",
+    borderRadius:20,
     flex: 1,
-    padding: 20,
+    paddingTop: 5,
+    paddingHorizontal:20,
     width: '100%',
   },
   tabBtnContainer: {
+    paddingTop:20,
+    marginBottom:5,
+    paddingHorizontal:20,
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',

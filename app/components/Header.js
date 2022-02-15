@@ -15,16 +15,6 @@ const Header = ({
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={()=>navigation.goBack()} style={{
-        position:"absolute",
-        marginLeft:"5%",
-      }}>
-        <IconlyProvider
-          primaryColor="#182D64"
-        >
-          <ChevronLeft  size={28} />
-        </IconlyProvider>
-      </TouchableOpacity>
       <View style={{
         flex:1,
         alignItems:"center",
@@ -38,6 +28,16 @@ const Header = ({
         {title}
         </Text>
       </View>
+      <TouchableOpacity onPress={()=>navigation.goBack()} style={{
+        position:"absolute",
+        marginLeft:"5%",
+      }}>
+        <IconlyProvider
+          primaryColor="#182D64"
+        >
+          <ChevronLeft  size={28} />
+        </IconlyProvider>
+      </TouchableOpacity>
     </View>
   );
 };
