@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { useDispatch } from 'react-redux';
 import { switchToDashboard } from '../../stores/actionCreators'
 import {
   View,
@@ -84,7 +83,7 @@ export default function SignupPin({navigation, route}) {
 
         <View>
           <Button 
-            text="Let’s go"
+            text="Let’s go d"
             bordered
             onPress={()=>dispatch(changeState())}
 

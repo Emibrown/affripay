@@ -21,15 +21,12 @@ export const restoreApp = () => {
 
 export const changeState = () => {
   return async (dispatch,getState) => {
-    const appState = await getAppState()
-
     const action = {
       type: APP_STATE ,
       payload:{
         appState:2
       }
     }
-
     dispatch(action);
   };
 }
