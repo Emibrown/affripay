@@ -1,8 +1,9 @@
 import {
   RESTORE_APP,
-  APP_STATE
+  APP_STATE,
+  LOGOUT
 } from "./action";
-import { getAppState } from "../utils/db";
+import { getAppState,clearData } from "../utils/db";
 
 export const restoreApp = () => {
   return async (dispatch,getState) => {
@@ -32,12 +33,26 @@ export const changeState = () => {
 }
 
 
-
 export const switchToDashboard = ()=> (dispatch)=>{
   dispatch({
     type: RESTORE_APP,
     payload:2
   })
+}
+
+export const logoutUser = () => {
+  return async (dispatch) => {
+    clearData()
+    .then((resp)=>{
+      const action = {
+        type: LOGOUT,
+      }
+      dispatch(action);
+    })
+    .catch((err)=>{
+      console.log("Application error")
+    })
+  };
 }
 
 

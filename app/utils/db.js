@@ -18,3 +18,12 @@ export const getAppState = async () => {
         return 0
     }
 }
+
+export const clearData = async () => {
+    try {
+        await AsyncStorage.clear()
+        return Promise.resolve();
+    } catch(e) {
+        return Promise.reject(e);
+    }
+}

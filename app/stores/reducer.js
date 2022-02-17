@@ -1,7 +1,8 @@
 import {
     RESTORE_APP,
     APP_STATE,
-    SWITCH_TO_DASHBOARD
+    SWITCH_TO_DASHBOARD,
+    LOGOUT
 } from "./action";
 const initialState = {
     user: null,
@@ -26,7 +27,12 @@ const Reducer = (state = initialState, action) => {
         return{
             ...state,
             appState:2
-        }
+        };
+    case LOGOUT:
+        return {
+            user: null,
+            appState:0,
+        };
   }
   return state
 }
