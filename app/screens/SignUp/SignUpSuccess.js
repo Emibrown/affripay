@@ -83,7 +83,7 @@ export default function SignupPin({navigation, route}) {
 
         <View>
           <Button 
-            text="Let’s go d"
+            text="Let’s go!"
             bordered
             onPress={()=>dispatch(changeState())}
 
