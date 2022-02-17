@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  ScrollView,
   Switch,
 } from 'react-native';
 import MenuImg from '../../assets/images/Menu.png';
@@ -12,8 +13,11 @@ import ProfileImg from '../../assets/images/p1.png';
 import LogoutImg from '../../assets/images/LogOut.png';
 import {ArrowRight, IconlyProvider} from 'react-native-iconly';
 import {useNavigation} from '@react-navigation/core';
-import {AuthContext} from '../../context/AuthContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Header from '../../components/Header';
+import {SafeAreaView,useSafeAreaInsets} from 'react-native-safe-area-context';
+import { moderateScale } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../stores/actionCreators';
 
 const lists = [
   {
@@ -34,125 +38,109 @@ const lists = [
 ];
 
 const Profile = () => {
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+
   const [isDark, setDarkTheme] = useState(false);
   const [isPN, setPushNotification] = useState(false);
   const navigation = useNavigation();
-  // const {signOut} = useContext(AuthContext);
 
-  const [userdata, setUserData] = useState({});
-  let {username, phone} = userdata;
-
-  useEffect(() => {
-    // alert(route.params.value);
-    const activeUser = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userData');
-
-        if (token !== null) {
-          // We have data!!
-
-          setUserData(JSON.parse(token));
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    activeUser();
-  }, []);
 
   const handleLogOut = () => {
-    // signOut();
+    dispatch(logoutUser())
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.justiBetweenContent}>
-        <Image source={MenuImg} resizeMode="cover" />
-        <Text style={styles.title}>Account</Text>
-        <View />
-      </View>
-      <View style={[styles.centerContent]}>
-        <View style={[styles.avatarImageContent, {marginVertical: 10}]}>
-          <Image
-            source={ProfileImg}
-            resizeMode="cover"
-            style={styles.avatarImage}
-          />
-        </View>
-        <Text style={[styles.nameText, {marginVertical: 20}]}>{username}</Text>
-        <Text style={styles.wallet}>$ 6647.57</Text>
-      </View>
-      <View style={[styles.listsContent, {marginVertical: 20}]}>
-        {lists.map(item => (
-          <View key={item.id} style={styles.centerText}>
-            <Text style={[styles.font14, styles.fontBold]}>{item.value}</Text>
-            <Text style={[styles.font14, styles.greyText]}>{item.label}</Text>
+    <SafeAreaView style={styles.container}>
+      <Header 
+        title="Account"
+      />
+      <ScrollView>
+        <View style={[styles.centerContent]}>
+          <View style={[styles.avatarImageContent, {marginVertical: 10}]}>
+            <Image
+              source={ProfileImg}
+              resizeMode="cover"
+              style={styles.avatarImage}
+            />
           </View>
-        ))}
-      </View>
-      <View>
-        <View style={[styles.justiBetweenContent, styles.listItem]}>
-          <Text style={styles.font14}>Phone</Text>
-          <View style={styles.rowContent}>
-            <Text style={[styles.font12, styles.greyText, {marginRight: 10}]}>
-              {phone}
-            </Text>
+          <Text style={[styles.nameText, {marginVertical: 10}]}>Abdul Fouad</Text>
+          <Text style={styles.wallet}>$ 6647.57</Text>
+        </View>
+        <View style={[styles.listsContent, {marginVertical: 25}]}>
+          {lists.map(item => (
+            <View key={item.id} style={styles.centerText}>
+              <Text style={[styles.font14]}>{item.value}</Text>
+              <Text style={[styles.font14, styles.greyText]}>{item.label}</Text>
+            </View>
+          ))}
+        </View>
+        <View style={{
+          marginHorizontal:"5%",
+          marginBottom:"10%"
+        }}>
+          <View style={[styles.justiBetweenContent, styles.listItem]}>
+            <Text style={styles.font14}>Phone</Text>
+            <View style={styles.rowContent}>
+              <Text style={[styles.font12, styles.greyText, {marginRight: 30}]}>
+              +2349012345678
+              </Text>
+              <TouchableOpacity>
+                <Text style={styles.primaryColor}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={[styles.justiBetweenContent, styles.listItem]}>
+            <Text style={styles.font14}>Pin</Text>
             <TouchableOpacity>
-              <Text style={styles.primaryColor}>Edit</Text>
+              <Text style={styles.primaryColor}>Change Pin</Text>
             </TouchableOpacity>
           </View>
-        </View>
-        <View style={[styles.justiBetweenContent, styles.listItem]}>
-          <Text style={styles.font14}>Pin</Text>
-          <TouchableOpacity>
-            <Text style={styles.primaryColor}>Change Pin</Text>
+          <View style={[styles.justiBetweenContent, styles.listItem]}>
+            <Text style={styles.font14}>Push Notification</Text>
+            <Switch
+              trackColor={{true: '#FFE9EE'}}
+              thumbColor={isPN ? '#125FD2' : '#f4f3f4'}
+              // ios_backgroundColor="#3e3e3e"
+              onValueChange={() => setPushNotification(!isPN)}
+              value={isPN}
+            />
+          </View>
+          <View style={[styles.justiBetweenContent, styles.listItem]}>
+            <Text style={styles.font14}>Dark Mode</Text>
+            <Switch
+              trackColor={{true: '#FFE9EE'}}
+              thumbColor={isDark ? '#125FD2' : '#f4f3f4'}
+              // ios_backgroundColor="#3e3e3e"
+              onValueChange={() => setDarkTheme(!isDark)}
+              value={isDark}
+            />
+          </View>
+          <TouchableOpacity
+            style={[styles.justiBetweenContent, styles.listItem]}
+            onPress={() => navigation.navigate('Settings')}>
+            <Text style={styles.font14}>Settings</Text>
+            <IconlyProvider
+              set="light"
+              primaryColor={'#A8A8A8'}
+              secondaryColor={'#A8A8A8'}
+              stroke="bold"
+              size="medium">
+              <ArrowRight />
+            </IconlyProvider>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.listItem,
+              {display: 'flex', alignItems: 'center', flexDirection: 'row'},
+            ]}
+            onPress={handleLogOut}>
+            <Image source={LogoutImg} resizeMode="contain" />
+            <Text style={[styles.primaryColor, {marginLeft: 10}]}>Logout</Text>
           </TouchableOpacity>
         </View>
-        <View style={[styles.justiBetweenContent, styles.listItem]}>
-          <Text style={styles.font14}>Push Notification</Text>
-          <Switch
-            trackColor={{true: '#FFE9EE'}}
-            thumbColor={isPN ? '#125FD2' : '#f4f3f4'}
-            // ios_backgroundColor="#3e3e3e"
-            onValueChange={() => setPushNotification(!isPN)}
-            value={isPN}
-          />
-        </View>
-        <View style={[styles.justiBetweenContent, styles.listItem]}>
-          <Text style={styles.font14}>Dark Mode</Text>
-          <Switch
-            trackColor={{true: '#FFE9EE'}}
-            thumbColor={isDark ? '#125FD2' : '#f4f3f4'}
-            // ios_backgroundColor="#3e3e3e"
-            onValueChange={() => setDarkTheme(!isDark)}
-            value={isDark}
-          />
-        </View>
-        <TouchableOpacity
-          style={[styles.justiBetweenContent, styles.listItem]}
-          onPress={() => navigation.navigate('Settings')}>
-          <Text style={styles.font14}>Settings</Text>
-          <IconlyProvider
-            set="light"
-            primaryColor={'#A8A8A8'}
-            secondaryColor={'#A8A8A8'}
-            stroke="bold"
-            size="medium">
-            <ArrowRight />
-          </IconlyProvider>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.listItem,
-            {display: 'flex', alignItems: 'center', flexDirection: 'row'},
-          ]}
-          onPress={handleLogOut}>
-          <Image source={LogoutImg} resizeMode="contain" />
-          <Text style={[styles.primaryColor, {marginLeft: 10}]}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -161,9 +149,7 @@ export default Profile;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     backgroundColor: '#F1F3FA',
-    paddingVertical: 40,
   },
   justiBetweenContent: {
     display: 'flex',
@@ -182,8 +168,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   centerContent: {
-    display: 'flex',
     alignItems: 'center',
+    justifyContent:"center"
   },
   title: {
     color: '#444444',
@@ -196,10 +182,8 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 1,
     borderColor: '#407BFF',
-    display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
   },
   avatarImage: {
     width: 64,
@@ -210,21 +194,23 @@ const styles = StyleSheet.create({
     color: '#182D64',
     fontSize: 18,
     fontWeight: '600',
+    textAlign:"center"
   },
   wallet: {
     backgroundColor: '#FFEEF2',
     borderRadius: 6,
     fontSize: 14,
+    color:"#000000",
     fontWeight: 'bold',
     paddingHorizontal: 30,
     paddingVertical: 10,
   },
   font12: {
-    fontSize: 12,
+    fontSize: moderateScale(12),
   },
   font14: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    fontSize: moderateScale(14),
+    fontWeight: "bold",
     color: '#444444',
   },
   greyText: {
@@ -235,6 +221,8 @@ const styles = StyleSheet.create({
   },
   primaryColor: {
     color: '#125FD2',
+    fontSize:moderateScale(12),
+    fontWeight:"bold"
   },
   rowContent: {
     display: 'flex',
