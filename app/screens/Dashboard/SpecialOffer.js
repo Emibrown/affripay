@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent:"center",
     alignItems:"center",
-    marginHorizontal: 24,
+    marginHorizontal: "5%",
     marginVertical: 15,
   },
   leftBar: {
     display: 'flex',
     width: '50%',
-    paddingHorizontal: 16,
+    paddingHorizontal: "5%",
     // justifyContent: 'space-between',
   },
   mb10: {

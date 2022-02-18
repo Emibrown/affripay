@@ -47,6 +47,7 @@ export default Dashboard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,    
+    backgroundColor:"#F1F3FA"
   },
   contentContainer: {
     flex: 1,

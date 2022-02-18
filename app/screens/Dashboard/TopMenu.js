@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingTop:Platform.OS == "android"?15:0,
-    paddingHorizontal: 20,
+    paddingHorizontal: "4%",
     paddingBottom:20
     // padding: 20,
   },

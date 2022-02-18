@@ -15,6 +15,8 @@ import ReceiveImg from '../../assets/images/F_Receive.png';
 import DepositImg from '../../assets/images/F_Deposit.png';
 import WithDrawImg from '../../assets/images/F_WithDraw.png';
 import DividerImg from '../../assets/images/Divider.png';
+import { moderateScale } from 'react-native-size-matters';
+
 
 const lists = [
   {
@@ -103,7 +105,7 @@ export default AssetCard;
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 24,
+    marginHorizontal: "5%",
   },
   gradientContainer: {
     borderRadius: 6,
@@ -156,10 +158,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   functionCard: {
+    // flex:1,
     backgroundColor: 'white',
     borderRadius: 16,
-    width:"22%",
-    paddingHorizontal:"3%",
+    width:per_width(20),
+    // marginLeft:"5%",
+    // paddingHorizontal:"3%",
     paddingVertical:"5%",
     display: 'flex',
     alignItems: 'center',
@@ -170,12 +174,12 @@ const styles = StyleSheet.create({
     height: 28,
   },
   title: {
-    fontSize: 12,
+    fontSize:moderateScale(12),
     color: '#4E5C80',
     marginTop: 10,
   },
   img:{
-    width:per_width(8),
-    height:per_width(8)
+    width:per_width(6),
+    height:per_width(6)
   }
 });
