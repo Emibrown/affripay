@@ -23,7 +23,7 @@ const App = (props)=> {
   );
 }
 const codePushOptions = {
-  checkFrequency:CodePush.CheckFrequency.ON_APP_START,
+  checkFrequency:CodePush.CheckFrequency.ON_APP_RESUME,
   installMode: CodePush.InstallMode.IMMEDIATE
 }
 
