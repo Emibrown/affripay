@@ -77,7 +77,7 @@ export default function Navigation() {
 
      return (
          <SafeAreaProvider>
-             <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+             <NavigationContainer>
                  <Stack.Navigator
                      screenOptions={{
                          ...TransitionPresets.SlideFromRightIOS
