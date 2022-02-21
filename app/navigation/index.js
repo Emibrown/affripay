@@ -31,7 +31,7 @@ import * as React from 'react'
 
 
 export default function Navigation() {
-     const state = useSelector((state) => state);
+     const state = useSelector((state) => state.AppState);
      const dispatch = useDispatch();
      const scheme = useColorScheme();
 
@@ -74,7 +74,6 @@ export default function Navigation() {
              return null;
          }
      }
-
      return (
          <SafeAreaProvider>
              <NavigationContainer>

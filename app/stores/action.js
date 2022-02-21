@@ -4,11 +4,3 @@ export const LOGOUT = "LOGOUT"
 
 
 export const SWITCH_TO_DASHBOARD = "SWITCH_TO_DASHBOARD"
-
-
-
-
-
-
-
-
