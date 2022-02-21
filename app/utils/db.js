@@ -27,3 +27,17 @@ export const clearData = async () => {
         return Promise.reject(e);
     }
 }
+
+export const createUserData = async (data)=>{
+    await AsyncStorage.setItem("__user", data.toString())
+}
+
+export const getUserData = async ()=>{
+    let data = await AsyncStorage.getItem("__user")
+    return data;
+}
+
+export const getAppToken = async ()=>{
+    const userData = await getUserData();
+    return (userData != null) ? userData.token : null
+}

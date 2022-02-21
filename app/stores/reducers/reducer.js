@@ -3,7 +3,7 @@ import {
     APP_STATE,
     SWITCH_TO_DASHBOARD,
     LOGOUT
-} from "./action";
+} from "../action";
 const initialState = {
     user: null,
     appLoading: true,

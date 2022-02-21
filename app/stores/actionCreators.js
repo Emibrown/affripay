@@ -8,14 +8,13 @@ import { getAppState,clearData } from "../utils/db";
 export const restoreApp = () => {
   return async (dispatch,getState) => {
     const appState = await getAppState()
-
     const action = {
       type: RESTORE_APP ,
       payload:{
-        appState:appState?appState:getState().appState,
+        appState:appState?appState:getState().AppState.appState,
       }
     }
-
+    console.log()
     dispatch(action);
   };
 }
