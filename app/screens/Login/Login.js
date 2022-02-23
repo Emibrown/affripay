@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Image,
@@ -7,21 +7,12 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
+  Modal,
   ScrollView
 } from 'react-native';
 import {Formik} from 'formik';
 import {SafeAreaView } from 'react-native-safe-area-context';
 import GradientText from '../../constants/gradientText';
-import {
-  IconlyProvider,
-  Home,
-  Notification,
-  User,
-  ArrowLeft,
-  ChevronLeft,
-  Call,
-  Phone,
-} from 'react-native-iconly';
 import Logo from '../../assets/images/logo.png';
 import Button from '../../components/Button';
 import PswIcon from '../../assets/images/PasswordIcon.svg';
@@ -32,6 +23,16 @@ import {Radio} from '@ui-kitten/components';
 import Header from '../../components/Header';
 import PinInput from '../../components/PinInput';
 import { primaryColor } from '../../style/color';
+import CountriesUI from '../../components/Countries';
+import { Countries } from '../../data/countries';
+import { getDeviceCountry } from '../../helpers/helperFunctions';
+import DeviceCountry, {
+  TYPE_ANY,
+} from 'react-native-device-country';
+import { loginSchema } from '../../helpers/validations';
+
+
+
 const { width, height } = Dimensions.get('window');
 
 const per_height = (value) => (value*height)/100
@@ -40,6 +41,30 @@ const per_width = (value) => (value*width)/100
 
 
 export default function Login({navigation, route}) {
+  const [showCountriesUI, setShowCountriesUI] = useState(false)
+  const [selectedCountry, setSelectedCountry] = useState(Countries.find((c)=>c.code=="DZ"));
+  const [loading, setLoading] = useState(false);
+
+
+
+  const onSelectCountry = (countryObj)=>{
+    setShowCountriesUI(false);
+    setSelectedCountry(countryObj)
+  }
+
+  const onSubmit = (values)=>{
+    navigation.navigate("EnterLoginPin",{phone:selectedCountry.dialCode+values.phone})
+  }
+
+  useEffect(()=>{
+      DeviceCountry.getCountryCode(TYPE_ANY)
+      .then((result) => {
+        setSelectedCountry(Countries.find((c)=>c.code==result.code.toUpperCase()))
+      })
+      .catch((e) => {
+       
+      });
+  },[])
   
 
   return (
@@ -62,7 +87,15 @@ export default function Login({navigation, route}) {
             <Text style={styles.subText}>Please enter your mobile number</Text>
           </View>
         </View>
-
+        <Formik
+          initialValues={{ 
+            phone:"", 
+          }}
+          onSubmit={values => onSubmit(values)}
+          validationSchema={loginSchema}
+        >
+        {({ values, handleChange, errors, setFieldTouched, touched, isValid, handleSubmit }) => (
+        <>
         <View style={styles.form}>
 
           <View style={styles.inputContainer}>
@@ -78,12 +111,15 @@ export default function Login({navigation, route}) {
                 <Text style={styles.label}>
                   ID
                 </Text>
-                <TouchableOpacity style={{
-                  flex:1,
-                  justifyContent:"center"
-                }}>
+                <TouchableOpacity 
+                  style={{
+                    flex:1,
+                    justifyContent:"center"
+                  }}
+                  onPress={()=>setShowCountriesUI(true)}
+                >
                   <Text style={styles.callCode}>
-                    +234
+                    {selectedCountry?.dialCode}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -108,11 +144,23 @@ export default function Login({navigation, route}) {
                     fontSize:moderateScale(14),
                     fontWeight:'500'
                   }}
-                  
-                  keyboardType="numeric"
+                  onChangeText={handleChange('phone')}
+                  keyboardType="phone-pad"
                 />
               </View>
             </View>
+            {
+              (touched.phone && errors.phone)&&(
+                <Text style={{
+                  fontSize:moderateScale(11),
+                  color:"red",
+                  marginLeft:"2%"
+                }}>
+                  {errors.phone}
+                </Text>
+              )
+            }
+           
           </View>
 
         
@@ -120,17 +168,51 @@ export default function Login({navigation, route}) {
             <Button 
               text="Continue"
               bordered
-              onPress={()=>navigation.navigate("EnterLoginPin")}
+              loading={loading}
+              disabled={loading}
+              onPress={handleSubmit}
             />
           </View>
          
         </View>
+        </>
+        )}
+      </Formik>
       </ScrollView>
+      <Modal 
+        visible={showCountriesUI} 
+        transparent={true} 
+        animated={true}
+        onRequestClose={()=>setShowCountriesUI(false)}
+        animationType="slide">
+
+          <View style={[styles.modalContainer]}>
+            <View style={[styles.modalContent]}>
+              <CountriesUI onSelect={onSelectCountry}/>
+            </View>
+          </View>
+      </Modal>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  modalContainer:{
+    flex:1,
+    flexDirection:'column',
+    justifyContent:'flex-end',
+    paddingHorizontal:10
+  },
+  modalContent:{
+    height:700,
+    borderTopLeftRadius:10,
+    borderTopRightRadius:10,
+    maxHeight:'60%',
+    backgroundColor:'#f1f1f1',
+    elevation:6,
+    borderTopWidth:5, 
+    borderTopColor:'blue'
+  },
   header:{
     paddingVertical:'3%',
     marginHorizontal:"3%"

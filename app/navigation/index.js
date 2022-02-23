@@ -46,7 +46,7 @@ export default function Navigation() {
      const appState = () => {
          switch (state.appState) {
          case 0:
-             return <Stack.Screen 
+             return <Stack.Screen
                  name="AuthNavigator" 
                  component={AuthNavigator} 
                  options={{

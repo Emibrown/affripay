@@ -10,68 +10,53 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ScrollView,
-  SafeAreaView,
   StatusBar,
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {SafeAreaView } from 'react-native-safe-area-context';
 import {COLORS, SIZES} from '../../constants/index';
 import Logo from '../../assets/images/logo.png';
 import Create from '../../assets/images/create.svg';
 import User from '../../assets/images/user.png';
 import More from '../../assets/images/More.svg';
-
+import { logoutUser } from '../../stores/actionCreators';
 import GradientText from '../../constants/gradientText';
 import Button from '../../components/Button';
-// import {Avatar} from '@ui-kitten/components';
-
+import { useDispatch, useSelector } from 'react-redux'
+import {Avatar} from '@ui-kitten/components';
 // import { LinearGradient } from 'expo-linear-gradient';
-export default function Index({navigation, route}) {
-  const [value, setValue] = useState('');
-  const [userdata, setUserData] = useState({});
 
-  let {username, phone} = userdata;
+
+
+export default function Index({navigation, route}) {
+  const dispatch = useDispatch()
+  const user = useSelector(state=>state.AppState.user);
+
+
+
 
   const onPressLogin = () => {
-    navigation.navigate('Login');
-    // alert(value);
+    dispatch(logoutUser("Login"))
   };
 
   const onPressSignUp = () => {
-    navigation.navigate('Signup');
-    // alert(value);
+    dispatch(logoutUser("Signup"))
   };
 
   const onPressEnterPin = () => {
     navigation.navigate('ReturningUserPin', {
-      phoneNumber: phone,
-      username: username,
+      phone: user.phone,
     });
   };
 
   useEffect(() => {
-    // alert(route.params.value);
-    const activeUser = async () => {
-      try {
-        const token = await AsyncStorage.getItem('userData');
-
-        if (token !== null) {
-          // We have data!!
-
-          setUserData(JSON.parse(token));
-        }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    activeUser();
+    
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
       <View style={styles.inner}>
         <View style={styles.topContain}>
           <Image style={styles.logo} source={Logo} />
@@ -79,19 +64,18 @@ export default function Index({navigation, route}) {
           {/* <Text style={styles.phoneNumber}>{realPhoneNumber}</Text> */}
         </View>
 
-        {username ? (
+        {user ? (
           <View>
             <TouchableOpacity
               onPress={onPressEnterPin}
               style={styles.loggedInUser}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                {/* <Avatar
+                <Avatar
                   source={User}
                   size="giant"
                   ImageComponent={ImageBackground}
-                /> */}
-
-                <Text style={styles.loggedInUserName}>{username}</Text>
+                />
+                <Text style={styles.loggedInUserName}>{user?.name}</Text>
               </View>
               <More />
             </TouchableOpacity>
@@ -172,6 +156,7 @@ const styles = StyleSheet.create({
   topContain: {
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:"10%"
   },
 
   createNewContainer: {

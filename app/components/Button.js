@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Dimensions,
   StyleSheet,
+  ActivityIndicator
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { moderateScale } from 'react-native-size-matters';
@@ -18,6 +19,7 @@ const Button = ({
   bordered = false,
   size = 'large',
   isDisabled = false,
+  Loading = false
 }) => {
   const large = '100%';
   const small = 50;
@@ -59,8 +61,14 @@ const Button = ({
 
   if (type === 'outlined') {
     return (
-      <TouchableOpacity style={[containerCommonStyle, {borderRadius: btnBorderRadius},{borderWidth:1.5,borderColor:"#324CDE"}]} onPress={onPress} disabled={isDisa}>
-        <Text style={[textCommonStyle,styles.buttonText]}>{text}</Text>
+      <TouchableOpacity style={[containerCommonStyle, {borderRadius: btnBorderRadius},{borderWidth:1.5,borderColor:"#324CDE",paddingVertical: btnHeight}]} onPress={onPress} disabled={isDisa}>
+        {
+          Loading?(
+            <ActivityIndicator color="black" size={25} />
+          ):(
+            <Text style={[textCommonStyle,styles.buttonText]}>{text}</Text>
+          )
+        }
       </TouchableOpacity>
 
     );
@@ -72,7 +80,13 @@ const Button = ({
         locations={[0.0, 1]}
         style={{flex:1, paddingVertical: btnHeight,}}
         >
-          <Text style={[textCommonStyle]}> {text} </Text>
+          {
+            Loading?(
+              <ActivityIndicator color="white" size={25} />
+            ):(
+              <Text style={[textCommonStyle]}> {text} </Text>
+            )
+          }
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -100,7 +114,7 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center',
     color:"#252B48",
-    padding: 15,
+    // padding: 15,
     marginLeft: 1,
     marginRight: 1,
     fontSize: 18,
