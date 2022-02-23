@@ -40,8 +40,7 @@ export default function Navigation() {
      }, []);
 
      const init = async () => {
-         await dispatch(restoreApp())
-         SplashScreen.hide()
+        dispatch(restoreApp())
      }
 
      const appState = () => {
