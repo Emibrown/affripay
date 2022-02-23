@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   View,
   Image,
@@ -29,15 +29,41 @@ import CustomTextInput from '../../components/CustomTextInput';
 import {Radio} from '@ui-kitten/components';
 import Header from '../../components/Header';
 import PinInput from '../../components/PinInput';
-const { width, height } = Dimensions.get('window');
+import { failureMessage } from '../../helpers/helperFunctions';
+import { StartLogin } from '../../stores/actions/login.action';
+import { useDispatch, useSelector } from 'react-redux'
 
+
+
+const { width, height } = Dimensions.get('window');
 const per_height = (value) => (value*height)/100
 const per_width = (value) => (value*width)/100
 
 
 
 export default function SignupPin({navigation, route}) {
-  
+  const {phone} = route.params
+  const [pin,setPin] = useState('')
+  const [loading,setLoading] = useState(false)
+  const dispatch = useDispatch()
+
+  const isRequesting = useSelector(state=>state.Login.isRequesting);
+
+
+
+  useEffect(()=>{
+    setLoading(isRequesting)
+  },[isRequesting])
+
+  const onSubmit = async () => {
+    if(pin.length == 4){
+      const data = {
+        phone,
+        pin
+      }
+      dispatch(StartLogin(data))
+    }
+  }
 
   return (
     <SafeAreaView style={{
@@ -54,22 +80,22 @@ export default function SignupPin({navigation, route}) {
             alignItems:"center"
           }}>
             <Text style={styles.text}>Please enter your unique PIN for</Text>
-            <Text style={styles.subText}>+234 8106 726 089</Text>
+            <Text style={styles.subText}>{phone}</Text>
           </View>
         </View>
 
         <View style={styles.form}>
 
           <View style={styles.inputContainer}>
-            <PinInput />
+            <PinInput onChange={(value)=>setPin(value)} />
           </View>
-
-        
           <View>
             <Button 
               text="Continue"
               bordered
-              onPress={()=>navigation.navigate("SignUpSuccess")}
+              Loading={loading}
+              isDisabled={pin.length != 4}
+              onPress={onSubmit}
             />
           </View>
          

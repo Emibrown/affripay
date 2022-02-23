@@ -1,20 +1,32 @@
 import {
   RESTORE_APP,
   APP_STATE,
-  LOGOUT
+  LOGOUT,
+  SET_AUTH_SCREEN,
+  SET_USER
 } from "./action";
-import { getAppState,clearData } from "../utils/db";
+import { getAppState,clearData, getUserData } from "../utils/db";
 
 export const restoreApp = () => {
   return async (dispatch,getState) => {
-    const appState = await getAppState()
+    let appState = await getAppState()
+    if(appState == 2){
+      appState = 1
+    }
+    const user = await getUserData()
+    console.log("restoreApp",user);
+    dispatch({
+        type: SET_USER,
+        payload:{
+            user
+        }
+    });
     const action = {
       type: RESTORE_APP ,
       payload:{
-        appState:appState?appState:getState().AppState.appState,
+        appState:appState?appState:0
       }
     }
-    console.log()
     dispatch(action);
   };
 }
@@ -39,12 +51,15 @@ export const switchToDashboard = ()=> (dispatch)=>{
   })
 }
 
-export const logoutUser = () => {
+export const logoutUser = (screen=null) => {
   return async (dispatch) => {
     clearData()
     .then((resp)=>{
       const action = {
         type: LOGOUT,
+        payload:{
+          authInitialScreen:screen
+        }
       }
       dispatch(action);
     })
@@ -53,6 +68,7 @@ export const logoutUser = () => {
     })
   };
 }
+
 
 
 

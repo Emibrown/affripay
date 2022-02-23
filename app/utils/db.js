@@ -29,12 +29,22 @@ export const clearData = async () => {
 }
 
 export const createUserData = async (data)=>{
-    await AsyncStorage.setItem("__user", data.toString())
+    try {
+        const jsonData = JSON.stringify(data)
+        await AsyncStorage.setItem('@__user', jsonData)
+        return Promise.resolve();
+    } catch (e) {
+        return Promise.reject(e);
+    }
 }
 
 export const getUserData = async ()=>{
-    let data = await AsyncStorage.getItem("__user")
-    return data;
+    try {
+        let value = await AsyncStorage.getItem('@__user')      
+        return value !== null? JSON.parse(value) : null;
+    } catch(e) {
+        return null
+    }
 }
 
 export const getAppToken = async ()=>{

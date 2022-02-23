@@ -40,14 +40,13 @@ export default function Navigation() {
      }, []);
 
      const init = async () => {
-         await dispatch(restoreApp())
-         SplashScreen.hide()
+        dispatch(restoreApp())
      }
 
      const appState = () => {
          switch (state.appState) {
          case 0:
-             return <Stack.Screen 
+             return <Stack.Screen
                  name="AuthNavigator" 
                  component={AuthNavigator} 
                  options={{

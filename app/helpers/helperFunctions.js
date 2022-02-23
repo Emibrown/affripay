@@ -1,3 +1,6 @@
+import Snackbar from 'react-native-snackbar';
+
+
 // it logs objects an arrays of objects
 export function consolelogObject(logNumber, objToLog) {
     wrapLog(logNumber)
@@ -36,4 +39,12 @@ export function formatToCurrency(number) {
 
 export function duplicateArr(arr) {
     return arr.map((item) => item)
+}
+
+export const failureMessage = (message) => {
+    return Snackbar.show({
+        text: message,
+        duration: Snackbar.LENGTH_SHORT,
+        backgroundColor: "#ef5350"
+    });
 }

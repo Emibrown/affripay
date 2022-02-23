@@ -10,15 +10,19 @@ import ReturningUser from '../screens/ReturningUser/Index';
 import ReturningUserPin from '../screens/ReturningUser/Pin';
 import { createStackNavigator,TransitionPresets} from '@react-navigation/stack';
 import Onboarding from '../screens/Onboarding';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const AuthStack = createStackNavigator();
 
 
 export const AuthNavigator = () => {
+  const state = useSelector((state) => state.AppState);
+
 
   return (
     <AuthStack.Navigator 
-      initialRouteName="Onboarding"
+      initialRouteName={state.authInitialScreen}
       screenOptions={{
           ...TransitionPresets.SlideFromRightIOS
       }}
@@ -104,15 +108,15 @@ export const ReturningUserNavigator = () => {
         name="ReturningUser"
         component={ReturningUser}
         options={{
-          headerShadowVisible: false,
+          headerShown: false,
           title: '',
         }}
       />
       <AuthStack.Screen
         name="ReturningUserPin"
-        component={ReturningUserPin}
+        component={EnterLoginPin}
         options={{
-          headerShadowVisible: false,
+          headerShown: false,
           title: '',
         }}
       />
